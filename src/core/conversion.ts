@@ -6,7 +6,7 @@ import {
     lstarFromArgb,
     rgbaFromArgb
 } from '@material/material-color-utilities'
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types/color-scheme.ts";
 
 /** Convert color to ARGB format */
 export function convertToArgb(color: Color) {

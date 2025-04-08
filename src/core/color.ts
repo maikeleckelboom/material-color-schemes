@@ -1,4 +1,4 @@
-import type {Color, CustomColor} from "../types/color.ts";
+import type {Color, CustomColor} from "../types/color-scheme.ts";
 import {customColor, type CustomColorGroup} from "@material/material-color-utilities";
 import {convertToArgb} from "./conversion.ts";
 

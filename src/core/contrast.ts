@@ -1,5 +1,5 @@
 import {Contrast, Hct, lstarFromArgb} from "@material/material-color-utilities";
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types/color-scheme.ts";
 import {convertToArgb} from "./conversion.ts";
 
 /**

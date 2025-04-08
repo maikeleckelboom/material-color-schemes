@@ -1,11 +1,7 @@
 import {type CustomColorGroup, DynamicScheme, TonalPalette} from "@material/material-color-utilities";
 import {Variant} from "../core/config";
-import type {CustomColor} from "./color.ts";
 import type {SchemeOptions} from "./scheme.ts";
-
-export type ThemeOptions = Omit<SchemeOptions, 'isDark'> & {
-    customColors?: CustomColor[]
-}
+import type {CustomColor} from "./color.ts";
 
 export interface Theme {
     source: number
@@ -24,4 +20,8 @@ export interface Theme {
         error: TonalPalette
     }
     customColors: CustomColorGroup[]
+}
+
+export type ThemeOptions = Omit<SchemeOptions, 'isDark'> & {
+    customColors?: CustomColor[]
 }

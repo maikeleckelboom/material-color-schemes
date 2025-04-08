@@ -1,4 +1,4 @@
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types/color-scheme.ts";
 import {Hct, TemperatureCache} from "@material/material-color-utilities";
 import {convertToArgb} from "./conversion.ts";
 

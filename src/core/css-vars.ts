@@ -1,6 +1,6 @@
 import kebabCase from 'kebab-case'
 import {convertToHex} from './conversion'
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types/color-scheme.ts";
 
 export type CssVarName<T extends string> = `--${Lowercase<T>}`
 

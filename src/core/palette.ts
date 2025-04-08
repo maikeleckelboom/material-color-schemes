@@ -1,6 +1,6 @@
 import {TonalPalette} from "@material/material-color-utilities";
 import {convertToArgb} from "./conversion.ts";
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types/color-scheme.ts";
 import {DEFAULT_PALETTE_TONES} from "./constants.ts";
 
 function getColorsForTonesFromPalette(tonalPalette: TonalPalette, paletteTones: number[]) {

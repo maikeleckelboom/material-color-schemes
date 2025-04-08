@@ -2,7 +2,8 @@ import camelCase from 'camelcase'
 import camelcase from 'camelcase'
 import {type CustomColorGroup, type DynamicScheme} from "@material/material-color-utilities";
 import type {Theme} from "../types";
-import {COLOR_SCHEME_KEYS, type ColorSchemeOptions} from "../types/color.ts";
+import {COLOR_SCHEME_KEYS, type ColorSchemeOptions, type ColorSchemeReturnType} from "../types/color-scheme.ts";
+
 
 /**
  * Format color name using template pattern
@@ -29,30 +30,7 @@ export function getColorsFromScheme(scheme: DynamicScheme, suffix?: string) {
     return colors
 }
 
-export function getColorsFromTheme(theme: Theme, options: ColorSchemeOptions = {}) {
-    const {brightnessVariants = true, dark = false} = options
-    const scheme = dark ? theme.schemes.dark : theme.schemes.light;
-
-    const colors = getColorsFromScheme(scheme);
-
-    if (brightnessVariants) {
-        const lightColors = getColorsFromScheme(theme.schemes.light, 'light')
-        const darkColors = getColorsFromScheme(theme.schemes.dark, 'dark')
-        Object.assign(colors, lightColors, darkColors)
-    }
-
-    const customColorTokens = Object.assign(
-        {},
-        ...theme.customColors.map(customColor => getColorsFromCustomColor(customColor, options))
-    );
-
-    return {
-        ...colors,
-        ...customColorTokens
-    }
-}
-
-export function getColorsFromCustomColor(colorGroup: CustomColorGroup, options: ColorSchemeOptions = {}) {
+export function getColorsFromCustomColor<V extends boolean>(colorGroup: CustomColorGroup, options: ColorSchemeOptions<V> = {}) {
     const {dark = false, brightnessVariants = true} = options
 
     const variants: { type: 'light' | 'dark'; suffix?: string }[] = []
@@ -78,4 +56,36 @@ export function getColorsFromCustomColor(colorGroup: CustomColorGroup, options: 
     }
 
     return colors
+}
+
+function getCustomColorsFromTheme<V extends boolean>(theme: Theme, options?: ColorSchemeOptions<V>) {
+    return Object.assign(
+        {},
+        ...theme.customColors.map(customColor => getColorsFromCustomColor(customColor, options))
+    );
+}
+
+export function createColorScheme<V extends boolean = false>(
+    theme: Theme,
+    options?: ColorSchemeOptions<V>
+): ColorSchemeReturnType<V> {
+    const {dark = false, brightnessVariants = false} = options || {}
+    const scheme = dark ? theme.schemes.dark : theme.schemes.light
+
+    const colors = getColorsFromScheme(scheme)
+    const customColors = getCustomColorsFromTheme(theme, options);
+
+    const colorScheme = {
+        ...colors,
+        ...customColors
+    }
+
+    if (brightnessVariants) {
+        const lightColors = getColorsFromScheme(theme.schemes.light, 'light')
+        const darkColors = getColorsFromScheme(theme.schemes.dark, 'dark')
+        Object.assign(colorScheme, lightColors, darkColors)
+    }
+
+    const result = options?.modifyColorScheme?.(colorScheme) ?? colorScheme;
+    return result as ColorSchemeReturnType<V>;
 }
