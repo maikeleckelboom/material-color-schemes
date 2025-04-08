@@ -1,12 +1,12 @@
 import {describe, expect, it} from "vitest"
 import {
+    applyAmoledFilter,
     type Color,
     COLOR_SCHEME_KEYS,
     createColorScheme,
     createScheme,
     createTheme,
-    type CustomColor,
-    getContrastColor
+    type CustomColor
 } from "../src";
 
 const seedColor: Color = '#CD3232'
@@ -32,7 +32,6 @@ describe('colorScheme', () => {
         })
     })
 
-
     it('should contain all color scheme keys with light/dark variants', () => {
         const theme = createTheme(seedColor)
         const colorScheme = createColorScheme(theme, {brightnessVariants: true})
@@ -44,17 +43,28 @@ describe('colorScheme', () => {
         })
     })
 
-    it('should generate color scheme from scheme', () => {
+    it('should allow modification of any color value', () => {
         const scheme = createScheme(seedColor)
         const colorScheme = createColorScheme(scheme, {
-            modifyColorScheme(colorScheme) {
-                colorScheme.onSurfaceContainer = getContrastColor(colorScheme.surfaceContainer)
-                colorScheme.scrim = colorScheme.surfaceContainer
-                return colorScheme
-            }
+            modifyColorScheme: (colorScheme) => ({
+                ...colorScheme,
+                /**
+                 * Override a color in the color scheme
+                 */
+                scrim: colorScheme.surfaceContainer,
+                /**
+                 * Add a color that is not in the color scheme
+                 */
+                accent: colorScheme.primary,
+            })
         })
-        expect(colorScheme).toHaveProperty('onSurfaceContainer')
         expect(colorScheme.scrim).toBe(colorScheme.surfaceContainer)
+    })
+
+    it('should apply amoled filter', () => {
+        const scheme = createScheme(seedColor)
+        const colorScheme = createColorScheme(scheme, {modifyColorScheme: applyAmoledFilter})
+        expect(colorScheme.background).toBe(4278190080)
     })
 
     it('should generate color scheme with custom colors', () => {
@@ -64,5 +74,19 @@ describe('colorScheme', () => {
         expect(colorScheme).toHaveProperty('blueberryBlue')
     })
 
+    it('should generate color scheme with custom colors and brightness variants', () => {
+        const theme = createTheme(seedColor, {customColors})
+        const colorScheme = createColorScheme(theme, {brightnessVariants: true})
+        expect(colorScheme).toHaveProperty('electricLeafLight')
+        expect(colorScheme).toHaveProperty('blueberryBlueDark')
+    })
+
+    it('should generate color scheme with custom colors and no brightness variants', () => {
+        const theme = createTheme(seedColor, {customColors})
+        const colorScheme = createColorScheme(theme, {brightnessVariants: false})
+        expect(colorScheme).toHaveProperty('electricLeaf')
+        expect(colorScheme).not.toHaveProperty('electricLeafLight')
+        expect(colorScheme).not.toHaveProperty('blueberryBlueDark')
+    })
 
 })

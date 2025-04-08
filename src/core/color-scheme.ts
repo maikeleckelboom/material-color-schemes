@@ -9,7 +9,7 @@ import {formatColorName} from "./format.ts";
  * brightness variants, and custom color modifications.
  *
  * @template V - Boolean type indicating whether brightness variants are included (extends boolean, defaults to false)
- * @param {Theme | DynamicScheme} themeOrScheme - The theme or color scheme to generate colors from
+ * @param theme
  * @param {ColorSchemeOptions<V>} [options] - Configuration options for the color scheme
  * @param {boolean} [options.dark=false] - Whether to use dark mode variant
  * @param {boolean} [options.brightnessVariants=false] - Whether to include light/dark brightness variants
@@ -32,42 +32,57 @@ import {formatColorName} from "./format.ts";
  * });
  */
 export function createColorScheme<V extends boolean = false>(
-    themeOrScheme: Theme | DynamicScheme,
+    theme: Theme,
     options?: ColorSchemeOptions<V>
-): ColorSchemeReturnType<V> {
-    const {dark = false, brightnessVariants = false} = options || {}
+): ColorSchemeReturnType<V>;
 
-    if (isInputScheme(themeOrScheme)) {
-        const colorScheme = getColorsFromScheme(themeOrScheme)
+export function createColorScheme(
+    scheme: DynamicScheme,
+    options?: ColorSchemeOptions
+): ColorScheme;
+
+export function createColorScheme(
+    input: Theme | DynamicScheme,
+    options?: ColorSchemeOptions
+): ColorScheme {
+    if ('schemes' in input) {
+        // Input is Theme
+        const theme = input as Theme;
+        const themeOptions = options as ColorSchemeOptions;
+        const {dark = false, brightnessVariants = false, modifyColorScheme} = themeOptions || {};
+        const scheme = dark ? theme.schemes.dark : theme.schemes.light;
+
+        const colors = getColorsFromScheme(scheme);
+        const customColors = getCustomColorsFromTheme(theme, options);
+
+        let colorScheme: ColorScheme = {
+            ...colors,
+            ...customColors
+        };
+
         if (brightnessVariants) {
-            const lightColors = getColorsFromScheme(themeOrScheme, 'light')
-            const darkColors = getColorsFromScheme(themeOrScheme, 'dark')
-            Object.assign(colorScheme, lightColors, darkColors)
+            const lightColors = getColorsFromScheme(theme.schemes.light, 'light');
+            const darkColors = getColorsFromScheme(theme.schemes.dark, 'dark');
+            colorScheme = {
+                ...colorScheme,
+                ...lightColors,
+                ...darkColors
+            };
         }
-        const result = options?.modifyColorScheme?.(colorScheme as ColorScheme) ?? colorScheme;
-        return result as ColorSchemeReturnType<V>;
+
+        const result = modifyColorScheme ? modifyColorScheme(colorScheme) : colorScheme;
+        return result as ColorSchemeReturnType<typeof brightnessVariants>;
+    } else {
+        // Input is DynamicScheme
+        const scheme = input as DynamicScheme;
+        const schemeOptions = options as { modifyColorScheme?: (cs: ColorScheme) => ColorScheme };
+        let result: ColorScheme = getColorsFromScheme(scheme);
+        if (schemeOptions?.modifyColorScheme) {
+            result = schemeOptions.modifyColorScheme(result);
+        }
+        return result;
     }
-
-    const scheme = isInputScheme(themeOrScheme) ? themeOrScheme : dark ? themeOrScheme.schemes.dark : themeOrScheme.schemes.light
-
-    const colors = getColorsFromScheme(scheme)
-    const customColors = getCustomColorsFromTheme(themeOrScheme, options);
-
-    const colorScheme = {
-        ...colors,
-        ...customColors
-    }
-
-    if (brightnessVariants) {
-        const lightColors = getColorsFromScheme(themeOrScheme.schemes.light, 'light')
-        const darkColors = getColorsFromScheme(themeOrScheme.schemes.dark, 'dark')
-        Object.assign(colorScheme, lightColors, darkColors)
-    }
-
-    const result = options?.modifyColorScheme?.(colorScheme as ColorScheme) ?? colorScheme;
-    return result as ColorSchemeReturnType<V>;
 }
-
 
 function isInputScheme(theme: Theme | DynamicScheme): theme is DynamicScheme {
     return theme instanceof DynamicScheme

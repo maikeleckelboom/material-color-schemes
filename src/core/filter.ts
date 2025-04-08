@@ -6,5 +6,6 @@ export function applyAmoledFilter<T extends ColorScheme>(colorScheme: T): T {
         ...colorScheme,
         background: blackARGB,
         surface: blackARGB,
+        lol: blackARGB,
     }
 }

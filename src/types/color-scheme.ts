@@ -31,7 +31,6 @@ export type ColorKey = typeof COLOR_SCHEME_KEYS[number] | (string & {});
  * custom properties should follow M3 naming conventions.
  */
 export interface ColorScheme extends Record<ColorKey, number> {
-    [key: string]: number;
 }
 
 /**
@@ -57,6 +56,23 @@ export type ColorSchemeLight = SuffixedColorScheme<'Light'>;
  */
 export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
 
+
+/**
+ * Return type for color scheme generation based on options
+ * @template V - Boolean type for brightness variants flag
+ * @type {ColorScheme | (ColorScheme & ColorSchemeLight & ColorSchemeDark)} ColorSchemeReturnType
+ * @description When brightnessVariants=true, combines base scheme with light/dark variants
+ * @example
+ * // With variants:
+ * type FullScheme = ColorSchemeReturnType<true>;  // Contains 'primary', 'primaryLight', 'primaryDark'
+ * // Without variants:
+ * type BaseScheme = ColorSchemeReturnType; // Only contains base keys
+ */
+export type ColorSchemeReturnType<V extends boolean> =
+    V extends true
+        ? ColorScheme & ColorSchemeLight & ColorSchemeDark
+        : ColorScheme;
+
 /**
  * Options for generating color schemes
  * @interface
@@ -77,24 +93,10 @@ export interface ColorSchemeOptions<V extends boolean = false> {
      */
     brightnessVariants?: V;
     /**
-     * Function to modify the color scheme
+     * Type-safe color scheme modifier that preserves existing properties
+     * while allowing new property additions
      */
-    modifyColorScheme?: <T extends ColorScheme | Record<string, number> = ColorScheme>(
-        colorScheme: T
-    ) => T & Record<string, number>}
+    modifyColorScheme?: <T extends ColorSchemeReturnType<V>>(colorScheme: T) => T
 
-/**
- * Return type for color scheme generation based on options
- * @template V - Boolean type for brightness variants flag
- * @type {ColorScheme | (ColorScheme & ColorSchemeLight & ColorSchemeDark)} ColorSchemeReturnType
- * @description When brightnessVariants=true, combines base scheme with light/dark variants
- * @example
- * // With variants:
- * type FullScheme = ColorSchemeReturnType<true>;  // Contains 'primary', 'primaryLight', 'primaryDark'
- * // Without variants:
- * type BaseScheme = ColorSchemeReturnType; // Only contains base keys
- */
-export type ColorSchemeReturnType<V extends boolean = false> =
-    V extends true
-        ? ColorScheme & ColorSchemeLight & ColorSchemeDark
-        : ColorScheme;
+}
+
