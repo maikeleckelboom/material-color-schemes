@@ -26,6 +26,13 @@
     "noPropertyAccessFromIndexSignature": false,
     "types": [
       "@vitest/browser/providers/playwright"
-    ]
+    ],
+
+    // # Additional options
+    "outDir": "dist",
+    "rootDir": "src",
+    "declaration": true,
+    "declarationDir": "dist/types",
+    "emitDeclarationOnly": true
   }
 }

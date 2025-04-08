@@ -1,6 +1,5 @@
-import type {ColorScheme} from "./color-scheme.ts";
 import type {Variant} from "../core/config";
-import type {Color} from "./color.ts";
+import type {Color} from "./color-scheme.ts";
 
 export interface DefaultSchemeOptions {
     primary?: Color
@@ -16,5 +15,3 @@ export interface DefaultSchemeOptions {
 export type SchemeOptions =
     | (DefaultSchemeOptions & { primary: Color; seedColor?: Color })
     | (DefaultSchemeOptions & { seedColor: Color; primary?: Color })
-
-export type modifyColorScheme = (colorScheme: ColorScheme) => ColorScheme

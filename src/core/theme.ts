@@ -1,5 +1,5 @@
 import type {Theme, ThemeOptions} from "../types";
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types";
 import {ContrastLevel, Variant} from "./config";
 import {createScheme} from "./scheme.ts";
 import {createCustomColor} from "./color.ts";

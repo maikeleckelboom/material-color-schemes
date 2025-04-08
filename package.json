@@ -17,6 +17,7 @@
     "kebab-case": "^2.0.1"
   },
   "scripts": {
-    "test:browser": "vitest"
+    "test:browser": "vitest",
+    "dev": "vitest --watch"
   }
 }

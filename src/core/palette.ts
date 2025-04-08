@@ -1,7 +1,7 @@
 import {TonalPalette} from "@material/material-color-utilities";
 import {convertToArgb} from "./conversion.ts";
-import {DEFAULT_PALETTE_TONES} from "./constants.ts";
-import type {Color} from "../types/color.ts";
+import {DEFAULT_PALETTE_TONES} from "../constants";
+import type {Color} from "../types";
 
 function getColorsForTonesFromPalette(tonalPalette: TonalPalette, paletteTones: number[]) {
     const result: Record<number, number> = {}

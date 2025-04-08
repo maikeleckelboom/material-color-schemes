@@ -1,6 +1,6 @@
 import {DislikeAnalyzer, Hct} from '@material/material-color-utilities'
 import {convertToArgb} from './conversion'
-import type {Color} from "../types/color.ts";
+import type {Color} from "../types";
 
 export function isDisliked(color: Color): boolean {
     const argb = convertToArgb(color)

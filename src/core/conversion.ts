@@ -1,12 +1,5 @@
-import {
-    argbFromHex,
-    Hct,
-    hexFromArgb,
-    labFromArgb,
-    lstarFromArgb,
-    rgbaFromArgb
-} from '@material/material-color-utilities'
-import type {Color} from "../types/color-scheme.ts";
+import {argbFromHex, Hct, hexFromArgb, labFromArgb, rgbaFromArgb} from '@material/material-color-utilities'
+import type {Color} from "../types";
 
 /** Convert color to ARGB format */
 export function convertToArgb(color: Color) {
@@ -31,7 +24,6 @@ export function convertToHct(color: Color): Hct {
     const argbColor = convertToArgb(color)
     return Hct.fromInt(argbColor)
 }
-
 
 /**
  * Convert ARGB color to Lab format

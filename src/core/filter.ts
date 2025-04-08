@@ -1,4 +1,4 @@
-import type {ColorScheme} from "../types/color-scheme.ts";
+import type {ColorScheme} from "../types";
 
 export function applyAmoledFilter<T extends ColorScheme>(colorScheme: T): T {
     const blackARGB: number = 4278190080

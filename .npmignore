@@ -1,0 +1,5 @@
+# Exclude development artifacts
+/test
+/docs
+/scripts
+*.config.js

@@ -1,79 +1,71 @@
-/**
- * Represents a complete color scheme following Material Design 3 specifications
- * @see https://m3.material.io/styles/color/overview
- */
-export const COLOR_SCHEME_KEYS = [
-    'primaryPaletteKeyColor',
-    'secondaryPaletteKeyColor',
-    'tertiaryPaletteKeyColor',
-    'neutralPaletteKeyColor',
-    'neutralVariantPaletteKeyColor',
-    'background',
-    'onBackground',
-    'surface',
-    'surfaceDim',
-    'surfaceBright',
-    'surfaceContainerLowest',
-    'surfaceContainerLow',
-    'surfaceContainer',
-    'surfaceContainerHigh',
-    'surfaceContainerHighest',
-    'onSurface',
-    'surfaceVariant',
-    'onSurfaceVariant',
-    'inverseSurface',
-    'inverseOnSurface',
-    'outline',
-    'outlineVariant',
-    'shadow',
-    'scrim',
-    'surfaceTint',
-    'primary',
-    'onPrimary',
-    'primaryContainer',
-    'onPrimaryContainer',
-    'inversePrimary',
-    'secondary',
-    'onSecondary',
-    'secondaryContainer',
-    'onSecondaryContainer',
-    'tertiary',
-    'onTertiary',
-    'tertiaryContainer',
-    'onTertiaryContainer',
-    'error',
-    'onError',
-    'errorContainer',
-    'onErrorContainer',
-    'primaryFixed',
-    'primaryFixedDim',
-    'onPrimaryFixed',
-    'onPrimaryFixedVariant',
-    'secondaryFixed',
-    'secondaryFixedDim',
-    'onSecondaryFixed',
-    'onSecondaryFixedVariant',
-    'tertiaryFixed',
-    'tertiaryFixedDim',
-    'onTertiaryFixed',
-    'onTertiaryFixedVariant',
-] as const;
+import {COLOR_SCHEME_KEYS} from "../constants";
 
+/**
+ * A color value that can be a string (e.g., hex color code) or a number (e.g., ARGB format).
+ */
+export type Color = string | number
+
+/**
+ * A looser version of the original Material color export.
+ * Accepts hex strings in `value`, and `blend` is optional.
+ */
+export interface CustomColor {
+    name: string
+    value: Color
+    blend?: boolean
+}
+
+/**
+ * Union type representing valid color scheme keys or any string.
+ * @type {string} ColorKey
+ * @description While technically allowing any string, should primarily use predefined M3 color keys
+ * for proper type safety and design system compliance.
+ */
 export type ColorKey = typeof COLOR_SCHEME_KEYS[number] | (string & {});
 
+/**
+ * Interface representing a complete Material Design 3 color scheme
+ * @interface
+ * @property {number} [key] - Numeric color value (typically 32-bit integer in 0xAARRGGBB format)
+ * @description Maps M3 color roles to their actual color values. While extensible via string index,
+ * custom properties should follow M3 naming conventions.
+ */
 export interface ColorScheme extends Record<ColorKey, number> {
     [key: string]: number;
 }
 
+/**
+ * Utility type for creating color scheme variants with suffix-appended keys
+ * @template Suffix - String suffix to append to color keys
+ * @type {Object} SuffixedColorScheme
+ * @example
+ * type PrimaryLight = SuffixedColorScheme<'Light'>; // Creates { primaryLight: number, ... }
+ */
 type SuffixedColorScheme<Suffix extends string> = {
     [K in ColorKey as `${K}${Suffix}`]: number;
 };
 
+/**
+ * Light mode variant color scheme with '-Light' suffix appended to keys
+ * @type {SuffixedColorScheme<'Light'>} ColorSchemeLight
+ */
 export type ColorSchemeLight = SuffixedColorScheme<'Light'>;
 
+/**
+ * Dark mode variant color scheme with '-Dark' suffix appended to keys
+ * @type {SuffixedColorScheme<'Dark'>} ColorSchemeDark
+ */
 export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
 
-export interface ColorSchemeOptions<V extends boolean> {
+/**
+ * Options for generating color schemes
+ * @interface
+ * @template V - Boolean type for brightness variants flag
+ * @property {boolean} [dark=false] - Whether to generate dark mode colors
+ * @property {V} [brightnessVariants=false] - Generate light/dark variants when true
+ * @property {Function} [modifyColorScheme] - Post-processing function for scheme customization
+ */
+export interface ColorSchemeOptions<V extends boolean = false> {
     /**
      * Whether to use the dark scheme
      * @default false
@@ -87,10 +79,22 @@ export interface ColorSchemeOptions<V extends boolean> {
     /**
      * Function to modify the color scheme
      */
-    modifyColorScheme?: (colorScheme: ColorScheme) => ColorScheme;
-}
+    modifyColorScheme?: <T extends ColorScheme | Record<string, number> = ColorScheme>(
+        colorScheme: T
+    ) => T & Record<string, number>}
 
-export type ColorSchemeReturnType<V extends boolean> =
+/**
+ * Return type for color scheme generation based on options
+ * @template V - Boolean type for brightness variants flag
+ * @type {ColorScheme | (ColorScheme & ColorSchemeLight & ColorSchemeDark)} ColorSchemeReturnType
+ * @description When brightnessVariants=true, combines base scheme with light/dark variants
+ * @example
+ * // With variants:
+ * type FullScheme = ColorSchemeReturnType<true>;  // Contains 'primary', 'primaryLight', 'primaryDark'
+ * // Without variants:
+ * type BaseScheme = ColorSchemeReturnType; // Only contains base keys
+ */
+export type ColorSchemeReturnType<V extends boolean = false> =
     V extends true
         ? ColorScheme & ColorSchemeLight & ColorSchemeDark
         : ColorScheme;

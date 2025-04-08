@@ -1,4 +1,4 @@
-import type {ScoreOptions} from "./score.ts";
+import type {ScoreOptions} from "../core";
 
 export const DEFAULT_QUANTIZE_MAX_COLORS: number = 128 as const
 

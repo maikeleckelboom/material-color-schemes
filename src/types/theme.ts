@@ -1,7 +1,7 @@
 import {type CustomColorGroup, DynamicScheme, TonalPalette} from "@material/material-color-utilities";
 import {Variant} from "../core/config";
 import type {SchemeOptions} from "./scheme.ts";
-import type {CustomColor} from "./color.ts";
+import type {CustomColor} from "./color-scheme.ts";
 
 export interface Theme {
     source: number

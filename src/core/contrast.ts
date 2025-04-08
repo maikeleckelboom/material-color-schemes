@@ -1,29 +1,6 @@
 import {Contrast, Hct, lstarFromArgb} from "@material/material-color-utilities";
-import type {Color} from "../types/color-scheme.ts";
+import type {Color} from "../types";
 import {convertToArgb} from "./conversion.ts";
-
-/**
- * Calculate the contrast ratio between two colors.
- *
- * @param color1 - The first color.
- * @param color2 - The second color.
- * @returns The contrast ratio between the two colors.
- */
-export function contrastRatioOfTones(color1: Color, color2: Color): number {
-    return Contrast.ratioOfTones(convertToArgb(color1), convertToArgb(color2));
-}
-
-
-/**
- * Check if two colors have a contrast ratio greater than or equal to a specified minimum.
- *
- * @param color1 - The first color.
- * @param color2 - The second color.
- * @param minRatio - The minimum contrast ratio to check against. Default is 4.5.
- */
-export function isContrasting(color1: Color, color2: Color, minRatio: number = 4.5): boolean {
-    return contrastRatioOfTones(color1, color2) >= minRatio;
-}
 
 /**
  * Get a contrasting tone based on a base tone and a contrast ratio.
@@ -45,11 +22,34 @@ function getContrastingTone(baseTone: number, ratio: number, preferLighter: bool
  * @param ratio - The contrast ratio.
  * @returns The best contrasting tone.
  */
-export function getBestContrastingTone(tone: number, ratio: number = 7.0): number {
+function getBestContrastingTone(tone: number, ratio: number = 7.0): number {
     const contrastWithDark = Contrast.ratioOfTones(tone, 0);
     const contrastWithLight = Contrast.ratioOfTones(tone, 100);
     const preferLighter = contrastWithLight > contrastWithDark;
     return getContrastingTone(tone, ratio, preferLighter);
+}
+
+/**
+ * Calculate the contrast ratio between two colors.
+ *
+ * @param color1 - The first color.
+ * @param color2 - The second color.
+ * @returns The contrast ratio between the two colors.
+ */
+export function getContrastRatioOfTones(color1: Color, color2: Color): number {
+    return Contrast.ratioOfTones(convertToArgb(color1), convertToArgb(color2));
+}
+
+
+/**
+ * Check if two colors have a contrast ratio greater than or equal to a specified minimum.
+ *
+ * @param color1 - The first color.
+ * @param color2 - The second color.
+ * @param minRatio - The minimum contrast ratio to check against. Default is 4.5.
+ */
+export function isContrasting(color1: Color, color2: Color, minRatio: number = 4.5): boolean {
+    return getContrastRatioOfTones(color1, color2) >= minRatio;
 }
 
 

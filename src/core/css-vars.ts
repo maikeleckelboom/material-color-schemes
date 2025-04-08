@@ -1,12 +1,7 @@
-import kebabCase from 'kebab-case'
 import {convertToHex} from './conversion'
-import type {Color} from "../types/color-scheme.ts";
+import {formatCssVarName} from "./format.ts";
+import type {Color} from "../types";
 
-export type CssVarName<T extends string> = `--${Lowercase<T>}`
-
-export function formatCssVarName<T extends string>(key: T): CssVarName<T> {
-    return `--${kebabCase(key)}` as CssVarName<T>
-}
 
 export function colorSchemeToCssVars<T extends Record<string, Color>>(
     colorScheme: T,

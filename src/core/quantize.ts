@@ -1,5 +1,5 @@
 import {QuantizerCelebi} from "@material/material-color-utilities";
-import {DEFAULT_QUANTIZE_MAX_COLORS} from "./constants.ts";
+import {DEFAULT_QUANTIZE_MAX_COLORS} from "../constants";
 
 /**
  * Quantize an image into a limited number of colors.
@@ -11,7 +11,7 @@ import {DEFAULT_QUANTIZE_MAX_COLORS} from "./constants.ts";
  *     pixels in the original image that correspond to the color in the
  *     quantized image.
  */
-export function quantize(
+export function quantizeColors(
     pixels: number[],
     maxColors: number = DEFAULT_QUANTIZE_MAX_COLORS,
 ): Map<number, number> {
