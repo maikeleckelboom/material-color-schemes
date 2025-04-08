@@ -1,0 +1,17 @@
+{
+  "name": "material-color-scheme",
+  "module": "src/index.ts",
+  "type": "module",
+  "devDependencies": {
+    "@types/bun": "latest",
+    "@material/material-color-utilities": "^0.3.0"
+  },
+  "peerDependencies": {
+    "typescript": "^5",
+    "@material/material-color-utilities": "^0.3.0"
+  },
+  "dependencies": {
+    "camelcase": "^8.0.0",
+    "kebab-case": "^2.0.1"
+  }
+}
