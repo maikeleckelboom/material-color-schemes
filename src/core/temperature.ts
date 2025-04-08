@@ -1,6 +1,6 @@
-import type {Color} from "../types/color-scheme.ts";
 import {Hct, TemperatureCache} from "@material/material-color-utilities";
 import {convertToArgb} from "./conversion.ts";
+import type {Color} from "../types/color.ts";
 
 export function isColdColor(color: Color) {
     const hct = Hct.fromInt(convertToArgb(color))

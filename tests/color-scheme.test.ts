@@ -2,6 +2,7 @@ import {describe, expect, it} from "vitest"
 import {createTheme} from "../src/core/theme.ts";
 import {createColorScheme} from "../src/core/color-scheme.ts";
 import {COLOR_SCHEME_KEYS} from "../src/types/color-scheme.ts";
+import {createScheme} from "../src/core/scheme.ts";
 
 describe('colorScheme', () => {
     it('should return a color scheme object', () => {
@@ -19,11 +20,12 @@ describe('colorScheme', () => {
         expect(theme).toBeDefined()
 
         const colorScheme = createColorScheme(theme, {
-            brightnessVariants: true,
-            dark: false,
+            brightnessVariants: true
         })
 
-        console.log(colorScheme.errorContainerLight)
+        expect(colorScheme).toHaveProperty('electricLeaf')
+        expect(colorScheme).toHaveProperty('blueberryBlue')
+
     })
 
 
@@ -31,9 +33,7 @@ describe('colorScheme', () => {
         const theme = createTheme('#CD3232')
         const colorScheme = createColorScheme(theme, {
             brightnessVariants: true,
-            modifyColorScheme:(colorScheme) => {
-                // Modify the color scheme here if needed
-                console.log(colorScheme )
+            modifyColorScheme: (colorScheme) => {
                 return colorScheme
             }
         })
@@ -45,23 +45,13 @@ describe('colorScheme', () => {
         })
     })
 
-    it('should contain custom colors', () => {
-        const customColors = [
-            {
-                name: 'Electric Leaf',
-                value: '#32CD32',
-            },
-            {
-                name: 'Blueberry Blue',
-                value: '#4F66B0',
-            },
-        ]
+    it('should generate color scheme from scheme', () => {
+        const scheme = createScheme('#CD3232')
+        const colorScheme = createColorScheme(scheme)
+        console.log(colorScheme)
+        expect(colorScheme).toHaveProperty('primary')
 
-        const theme = createTheme('#CD3232', {customColors})
-        const colorScheme = createColorScheme(theme)
 
-        expect(colorScheme).toHaveProperty('electricLeaf')
-        expect(colorScheme).toHaveProperty('blueberryBlue')
     })
 
 })

@@ -1,26 +1,9 @@
-import camelCase from 'camelcase'
 import camelcase from 'camelcase'
-import {type CustomColorGroup, type DynamicScheme} from "@material/material-color-utilities";
+import {type CustomColorGroup, DynamicScheme} from "@material/material-color-utilities";
 import type {Theme} from "../types";
 import {COLOR_SCHEME_KEYS, type ColorSchemeOptions, type ColorSchemeReturnType} from "../types/color-scheme.ts";
+import {formatColorName} from "./format.ts";
 
-
-/**
- * Format color name using template pattern
- *
- * @param pattern The example template pattern to format the color name to
- * @param name The default name to use in the template
- * @param suffix The suffix to append to the formatted name
- * @returns The formatted color name
- */
-export function formatColorName(pattern: string, name: string, suffix?: string) {
-    return camelCase(
-        `${pattern
-            .replace(/([A-Z])/g, `_$1`)
-            .toLowerCase()
-            .replace(/color/g, camelCase(name))}${suffix ? `_${suffix}` : ''}`,
-    )
-}
 
 export function getColorsFromScheme(scheme: DynamicScheme, suffix?: string) {
     const colors: Record<string, number> = {}
@@ -65,12 +48,27 @@ function getCustomColorsFromTheme<V extends boolean>(theme: Theme, options?: Col
     );
 }
 
+function isInputScheme(theme: Theme | DynamicScheme): theme is DynamicScheme {
+    return theme instanceof DynamicScheme
+}
+
 export function createColorScheme<V extends boolean = false>(
-    theme: Theme,
+    theme: Theme | DynamicScheme,
     options?: ColorSchemeOptions<V>
 ): ColorSchemeReturnType<V> {
     const {dark = false, brightnessVariants = false} = options || {}
-    const scheme = dark ? theme.schemes.dark : theme.schemes.light
+
+    if (isInputScheme(theme)) {
+        const colors = getColorsFromScheme(theme)
+        if (brightnessVariants) {
+            const lightColors = getColorsFromScheme(theme, 'light')
+            const darkColors = getColorsFromScheme(theme, 'dark')
+            Object.assign(colors, lightColors, darkColors)
+        }
+        return colors as ColorSchemeReturnType<V>
+    }
+
+    const scheme = isInputScheme(theme) ? theme : dark ? theme.schemes.dark : theme.schemes.light
 
     const colors = getColorsFromScheme(scheme)
     const customColors = getCustomColorsFromTheme(theme, options);
