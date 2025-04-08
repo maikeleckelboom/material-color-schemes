@@ -52,7 +52,7 @@ export function createMaterialTheme(
         customColors = [],
     } = options
 
-    const seedColor = convertToArgb(options.seedColor || options.primary || 0)
+    const seedColor = convertToArgb(options.seedColor ?? options.primary ?? 0)
 
     const newScheme = (isDark: boolean) =>
         createDynamicScheme({
