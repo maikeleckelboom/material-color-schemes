@@ -1,5 +1,8 @@
 import camelCase from 'camelcase'
-import type {ColorGroup, CustomColorGroup} from "@material/material-color-utilities";
+import camelcase from 'camelcase'
+import {type CustomColorGroup, type DynamicScheme} from "@material/material-color-utilities";
+import type {Theme} from "../types";
+import {COLOR_SCHEME_KEYS, type ColorSchemeOptions} from "../types/color.ts";
 
 /**
  * Format color name using template pattern
@@ -18,49 +21,61 @@ export function formatColorName(pattern: string, name: string, suffix?: string) 
     )
 }
 
-/**
- * Process a color group and return a record of color names and their ARGB values.
- *
- * @param name The default name to use in the template
- * @param colorGroup The color group to process
- * @param suffix An optional suffix to append to the color names
- * @returns A record of color names and their ARGB values
- */
-export function convertGroup(colorGroup: ColorGroup, name: string, suffix?: string) {
-    const result: Record<string, number> = {}
-    for (const key in colorGroup) {
-        const colorName = formatColorName(key, name, suffix)
-        result[colorName] = colorGroup[key as keyof ColorGroup]
+export function getColorsFromScheme(scheme: DynamicScheme, suffix?: string) {
+    const colors: Record<string, number> = {}
+    COLOR_SCHEME_KEYS.forEach(key => {
+        colors[camelcase(key + (suffix ? `_${suffix}` : ''))] = scheme[key]
+    })
+    return colors
+}
+
+export function getColorsFromTheme(theme: Theme, options: ColorSchemeOptions = {}) {
+    const {brightnessVariants = true, dark = false} = options
+    const scheme = dark ? theme.schemes.dark : theme.schemes.light;
+
+    const colors = getColorsFromScheme(scheme);
+
+    if (brightnessVariants) {
+        const lightColors = getColorsFromScheme(theme.schemes.light, 'light')
+        const darkColors = getColorsFromScheme(theme.schemes.dark, 'dark')
+        Object.assign(colors, lightColors, darkColors)
     }
-    return result
+
+    const customColorTokens = Object.assign(
+        {},
+        ...theme.customColors.map(customColor => getColorsFromCustomColor(customColor, options))
+    );
+
+    return {
+        ...colors,
+        ...customColorTokens
+    }
 }
 
-/**
- * Process a custom color group and return a record of color names and their ARGB values.
- *
- * @param group The custom color group to process.
- * @param opts Options for processing the color group.
- * @returns A record of color names and their ARGB values.
- */
-export function convertCustomGroup(
-    group: CustomColorGroup,
-    opts: { isDark?: boolean; } = {},
-): Record<string, number> {
-    const { isDark = false } = opts
-    const { name } = group.color
-    return convertGroup(isDark ? group.dark : group.light, name)
-}
+export function getColorsFromCustomColor(colorGroup: CustomColorGroup, options: ColorSchemeOptions = {}) {
+    const {dark = false, brightnessVariants = true} = options
 
-/**
- * Process multiple custom color groups and return a record of color names and their ARGB values.
- *
- * @param groups The custom color groups to process.
- * @param opts Options for processing the color groups.
- * @returns A record of color names and their ARGB values.
- */
-export function convertAllCustomGroups(
-    groups?: CustomColorGroup[],
-    opts: { isDark?: boolean; } = {},
-): Record<string, number> {
-    return Object.assign({}, ...(groups?.map((group) => convertCustomGroup(group, opts)) || []))
+    const variants: { type: 'light' | 'dark'; suffix?: string }[] = []
+
+    variants.push({type: dark ? 'dark' : 'light'})
+
+    if (brightnessVariants) {
+        variants.push(
+            {type: 'light', suffix: `light`},
+            {type: 'dark', suffix: `dark`}
+        )
+    }
+
+    const colors: Record<string, number> = {}
+
+    for (const {type, suffix: variantSuffix} of variants) {
+        for (const [pattern, value] of Object.entries(
+            colorGroup[type as 'light' | 'dark']
+        )) {
+            const token = formatColorName(pattern, colorGroup.color.name, variantSuffix)
+            colors[token] = value
+        }
+    }
+
+    return colors
 }

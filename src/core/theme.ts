@@ -1,7 +1,7 @@
-import type {MaterialTheme, MaterialThemeOptions} from "../types";
+import type {Theme, ThemeOptions} from "../types";
 import type {Color} from "../types/color.ts";
 import {ContrastLevel, Variant} from "./config";
-import {createDynamicScheme} from "./scheme.ts";
+import {createScheme} from "./scheme.ts";
 import {createCustomColor} from "./color.ts";
 import {TonalPalette} from "@material/material-color-utilities";
 import {convertToArgb} from "./conversion.ts";
@@ -13,30 +13,30 @@ import {convertToArgb} from "./conversion.ts";
  *
  * @example
  * // Using seed color with options
- * createMaterialTheme(0xff0000, { contrastLevel: ContrastLevel.HIGH });
+ * createTheme(0xff0000, { contrastLevel: ContrastLevel.HIGH });
  *
  * @example
  * // Using full options object
- * createMaterialTheme({
+ * createTheme({
  *   seedColor: 0x00ff00,
  *   variant: Variant.EXPRESSIVE,
  *   customColors: [/* ... *\/]
  * });
  *
- * @returns {MaterialTheme} Complete theme object with light/dark schemes and palettes
+ * @returns {Theme} Complete theme object with light/dark schemes and palettes
  * @param seedColor
  * @param options
  */
-export function createMaterialTheme(
+export function createTheme(
     seedColor: Color,
-    options?: Omit<MaterialThemeOptions, 'seedColor'>
-): MaterialTheme;
-export function createMaterialTheme(options: MaterialThemeOptions): MaterialTheme;
-export function createMaterialTheme(
-    colorOrOptions: Color | MaterialThemeOptions,
-    maybeOptions?: Omit<MaterialThemeOptions, 'seedColor'>,
-): MaterialTheme {
-    const options: MaterialThemeOptions =
+    options?: Omit<ThemeOptions, 'seedColor'>
+): Theme;
+export function createTheme(options: ThemeOptions): Theme;
+export function createTheme(
+    colorOrOptions: Color | ThemeOptions,
+    maybeOptions?: Omit<ThemeOptions, 'seedColor'>,
+): Theme {
+    const options: ThemeOptions =
         typeof colorOrOptions === 'number' || typeof colorOrOptions === 'string'
             ? {...maybeOptions, seedColor: colorOrOptions}
             : colorOrOptions;
@@ -55,7 +55,7 @@ export function createMaterialTheme(
     const seedColor = convertToArgb(options.seedColor ?? options.primary ?? 0)
 
     const newScheme = (isDark: boolean) =>
-        createDynamicScheme({
+        createScheme({
             seedColor,
             isDark,
             primary,
@@ -67,16 +67,16 @@ export function createMaterialTheme(
             variant,
         })
 
-    const lightScheme = newScheme(false)
+    const scheme = newScheme(false)
     const darkScheme = newScheme(true)
 
     const core = {
-        a1: lightScheme.primaryPalette,
-        a2: lightScheme.secondaryPalette,
-        a3: lightScheme.tertiaryPalette,
-        n1: lightScheme.neutralPalette,
-        n2: lightScheme.neutralVariantPalette,
-        error: lightScheme.errorPalette,
+        a1: scheme.primaryPalette,
+        a2: scheme.secondaryPalette,
+        a3: scheme.tertiaryPalette,
+        n1: scheme.neutralPalette,
+        n2: scheme.neutralVariantPalette,
+        error: scheme.errorPalette,
     }
 
     return {
@@ -84,7 +84,7 @@ export function createMaterialTheme(
         contrastLevel,
         variant,
         schemes: {
-            light: lightScheme,
+            light: scheme,
             dark: darkScheme,
         },
         palettes: {

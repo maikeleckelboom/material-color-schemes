@@ -7,7 +7,7 @@ import {convertToArgb, convertToHct} from "./conversion.ts";
 import {ContrastLevel} from "./config";
 
 /**
- * Generates a dynamic color scheme based on provided configuration options.
+ * Generates a dynamic scheme based on provided configuration options.
  *
  * This function supports two overloads:
  * 1. Provide a seed color with optional default options.
@@ -27,9 +27,9 @@ import {ContrastLevel} from "./config";
  *                                  additional colors to override specific palettes.
  * @returns {DynamicScheme} The dynamic color scheme generated according to the given options.
  */
-export function createDynamicScheme(seedColor: Color, options?: DefaultSchemeOptions): DynamicScheme
-export function createDynamicScheme(options: SchemeOptions): DynamicScheme
-export function createDynamicScheme(
+export function createScheme(seedColor: Color, options?: DefaultSchemeOptions): DynamicScheme
+export function createScheme(options: SchemeOptions): DynamicScheme
+export function createScheme(
     colorOrOptions: Color | SchemeOptions,
     maybeOptions?: DefaultSchemeOptions,
 ): DynamicScheme {

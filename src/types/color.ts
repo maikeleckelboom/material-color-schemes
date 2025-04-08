@@ -6,59 +6,81 @@ export interface CustomColor {
     blend?: boolean
 }
 
-export interface DynamicColors {
-    primaryPaletteKeyColor: number
-    secondaryPaletteKeyColor: number
-    tertiaryPaletteKeyColor: number
-    neutralPaletteKeyColor: number
-    neutralVariantPaletteKeyColor: number
-    background: number
-    onBackground: number
-    surface: number
-    surfaceDim: number
-    surfaceBright: number
-    surfaceContainerLowest: number
-    surfaceContainerLow: number
-    surfaceContainer: number
-    surfaceContainerHigh: number
-    surfaceContainerHighest: number
-    onSurface: number
-    surfaceVariant: number
-    onSurfaceVariant: number
-    inverseSurface: number
-    inverseOnSurface: number
-    outline: number
-    outlineVariant: number
-    shadow: number
-    scrim: number
-    surfaceTint: number
-    primary: number
-    onPrimary: number
-    primaryContainer: number
-    onPrimaryContainer: number
-    inversePrimary: number
-    secondary: number
-    onSecondary: number
-    secondaryContainer: number
-    onSecondaryContainer: number
-    tertiary: number
-    onTertiary: number
-    tertiaryContainer: number
-    onTertiaryContainer: number
-    error: number
-    onError: number
-    errorContainer: number
-    onErrorContainer: number
-    primaryFixed: number
-    primaryFixedDim: number
-    onPrimaryFixed: number
-    onPrimaryFixedVariant: number
-    secondaryFixed: number
-    secondaryFixedDim: number
-    onSecondaryFixed: number
-    onSecondaryFixedVariant: number
-    tertiaryFixed: number
-    tertiaryFixedDim: number
-    onTertiaryFixed: number
-    onTertiaryFixedVariant: number
+/**
+ * Represents a complete color scheme following Material Design 3 specifications
+ * @see https://m3.material.io/styles/color/overview
+ */
+export const COLOR_SCHEME_KEYS = [
+    'primaryPaletteKeyColor',
+    'secondaryPaletteKeyColor',
+    'tertiaryPaletteKeyColor',
+    'neutralPaletteKeyColor',
+    'neutralVariantPaletteKeyColor',
+    'background',
+    'onBackground',
+    'surface',
+    'surfaceDim',
+    'surfaceBright',
+    'surfaceContainerLowest',
+    'surfaceContainerLow',
+    'surfaceContainer',
+    'surfaceContainerHigh',
+    'surfaceContainerHighest',
+    'onSurface',
+    'surfaceVariant',
+    'onSurfaceVariant',
+    'inverseSurface',
+    'inverseOnSurface',
+    'outline',
+    'outlineVariant',
+    'shadow',
+    'scrim',
+    'surfaceTint',
+    'primary',
+    'onPrimary',
+    'primaryContainer',
+    'onPrimaryContainer',
+    'inversePrimary',
+    'secondary',
+    'onSecondary',
+    'secondaryContainer',
+    'onSecondaryContainer',
+    'tertiary',
+    'onTertiary',
+    'tertiaryContainer',
+    'onTertiaryContainer',
+    'error',
+    'onError',
+    'errorContainer',
+    'onErrorContainer',
+    'primaryFixed',
+    'primaryFixedDim',
+    'onPrimaryFixed',
+    'onPrimaryFixedVariant',
+    'secondaryFixed',
+    'secondaryFixedDim',
+    'onSecondaryFixed',
+    'onSecondaryFixedVariant',
+    'tertiaryFixed',
+    'tertiaryFixedDim',
+    'onTertiaryFixed',
+    'onTertiaryFixedVariant',
+] as const;
+
+export type ColorKey = typeof COLOR_SCHEME_KEYS[number] | (string & {});
+
+export interface ColorScheme extends Record<ColorKey, number> {
+}
+
+type SuffixedColorScheme<Suffix extends string> = {
+    [K in ColorKey as `${K}${Suffix}`]: number;
+};
+
+export type LightColorScheme = SuffixedColorScheme<'Light'>;
+
+export type DarkColorScheme = SuffixedColorScheme<'Dark'>;
+
+export interface ColorSchemeOptions {
+    dark?: boolean
+    brightnessVariants?: boolean
 }

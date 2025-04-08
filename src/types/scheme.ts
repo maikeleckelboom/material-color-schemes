@@ -1,4 +1,4 @@
-import type {Color, DynamicColors} from "./color.ts";
+import type {Color, ColorScheme} from "./color.ts";
 import type {Variant} from "../core/config";
 
 export interface DefaultSchemeOptions {
@@ -17,5 +17,5 @@ export type SchemeOptions =
     | (DefaultSchemeOptions & { seedColor: Color; primary?: Color })
 
 export interface ToColorSchemeOptions {
-    modifyColorScheme?: (colorScheme: DynamicColors) => DynamicColors
+    modifyColorScheme?: (colorScheme: ColorScheme) => ColorScheme
 }
