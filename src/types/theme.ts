@@ -3,7 +3,11 @@ import {Variant} from "../core/config";
 import type {CustomColor} from "./color.ts";
 import type {SchemeOptions} from "./scheme.ts";
 
-export interface Theme {
+export type MaterialThemeOptions = Omit<SchemeOptions, 'isDark'> & {
+    customColors?: CustomColor[]
+}
+
+export interface MaterialTheme {
     source: number
     contrastLevel: number
     variant: Variant
@@ -20,8 +24,4 @@ export interface Theme {
         error: TonalPalette
     }
     customColors: CustomColorGroup[]
-}
-
-export type ThemeOptions = SchemeOptions & {
-    customColors?: CustomColor[]
 }

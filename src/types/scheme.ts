@@ -10,7 +10,6 @@ export interface DefaultSchemeOptions {
     contrastLevel?: number
     variant?: Variant
     isDark?: boolean
-    isAmoled?: boolean
 }
 
 export type SchemeOptions =

@@ -7,8 +7,7 @@ export function createTonalPalette(color: Color): TonalPalette {
     return TonalPalette.fromInt(convertToArgb(color))
 }
 
-// getColorsByTone, paletteToColors, buildToneColorMap, applyTonesToPalette, extractToneColors
-export function createTonalPaletteColors(
+export function getColorsForTones(
     tonalPalette: Color | TonalPalette,
     paletteTones: number[] = DEFAULT_PALETTE_TONES
 ): Record<number, number> {
