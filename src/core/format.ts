@@ -1,5 +1,5 @@
-import camelCase from "camelcase";
-import kebabCase from "kebab-case";
+import camelCase from 'camelcase';
+import kebabCase from 'kebab-case';
 
 /**
  * Format color name using template pattern
@@ -10,15 +10,15 @@ import kebabCase from "kebab-case";
  * @returns The formatted color name
  */
 export function formatColorName(pattern: string, name: string, suffix?: string) {
-    return camelCase(
-        `${pattern
-            .replace(/([A-Z])/g, `_$1`)
-            .toLowerCase()
-            .replace(/color/g, camelCase(name))}${suffix ? `_${suffix}` : ''}`,
-    )
+  return camelCase(
+    `${pattern
+      .replace(/([A-Z])/g, `_$1`)
+      .toLowerCase()
+      .replace(/color/g, camelCase(name))}${suffix ? `_${suffix}` : ''}`,
+  );
 }
 
-export type CssVarName<T extends string> = `--${Lowercase<T>}`
+export type CssVarName<T extends string> = `--${Lowercase<T>}`;
 
 /**
  * Format to a CSS variable name
@@ -27,5 +27,5 @@ export type CssVarName<T extends string> = `--${Lowercase<T>}`
  * @returns The formatted CSS variable name
  */
 export function formatCssVarName<T extends string>(key: T): CssVarName<T> {
-    return `--${kebabCase(key)}` as CssVarName<T>
+  return `--${kebabCase(key)}` as CssVarName<T>;
 }

@@ -1,10 +1,10 @@
-import type {Color} from "../types";
-import {DynamicScheme, TonalPalette} from "@material/material-color-utilities";
-import {createTonalPalette} from "./palette.ts";
-import type {DefaultSchemeOptions, SchemeOptions} from "../types";
-import {mapVariantToScheme, Variant} from "./config/variant.ts";
-import {convertToArgb, convertToHct} from "./conversion.ts";
-import {ContrastLevel} from "./config";
+import type { Color } from '../types';
+import { DynamicScheme, TonalPalette } from '@material/material-color-utilities';
+import { createTonalPalette } from './palette.ts';
+import type { DefaultSchemeOptions, SchemeOptions } from '../types';
+import { mapVariantToScheme, Variant } from './config/variant.ts';
+import { convertToArgb, convertToHct } from './conversion.ts';
+import { ContrastLevel } from './config';
 
 /**
  * Generates a dynamic scheme based on provided configuration options.
@@ -27,64 +27,68 @@ import {ContrastLevel} from "./config";
  *                                  additional colors to override specific palettes.
  * @returns {DynamicScheme} The dynamic color scheme generated according to the given options.
  */
-export function createScheme(seedColor: Color, options?: DefaultSchemeOptions): DynamicScheme
-export function createScheme(options: SchemeOptions): DynamicScheme
+export function createScheme(seedColor: Color, options?: DefaultSchemeOptions): DynamicScheme;
+export function createScheme(options: SchemeOptions): DynamicScheme;
 export function createScheme(
-    colorOrOptions: Color | SchemeOptions,
-    maybeOptions?: DefaultSchemeOptions,
+  colorOrOptions: Color | SchemeOptions,
+  maybeOptions?: DefaultSchemeOptions,
 ): DynamicScheme {
-    const options: SchemeOptions =
-        typeof colorOrOptions === 'number' || typeof colorOrOptions === 'string'
-            ? {...maybeOptions, seedColor: colorOrOptions}
-            : colorOrOptions
+  const options: SchemeOptions =
+    typeof colorOrOptions === 'number' || typeof colorOrOptions === 'string'
+      ? { ...maybeOptions, seedColor: colorOrOptions }
+      : colorOrOptions;
 
-    const {contrastLevel = ContrastLevel.DEFAULT, isDark = false, variant = Variant.TONAL_SPOT} = options
+  const {
+    contrastLevel = ContrastLevel.DEFAULT,
+    isDark = false,
+    variant = Variant.TONAL_SPOT,
+  } = options;
 
-    const sourceColorArgb = convertToArgb(options.seedColor || options.primary || 0)
+  const sourceColorArgb = convertToArgb(options.seedColor || options.primary || 0);
 
-    const SchemeConstructor = mapVariantToScheme(variant)
-    const scheme = new SchemeConstructor(convertToHct(sourceColorArgb), isDark, contrastLevel)
+  const SchemeConstructor = mapVariantToScheme(variant);
+  const scheme = new SchemeConstructor(convertToHct(sourceColorArgb), isDark, contrastLevel);
 
-    if (isSchemeBasedOnSeedColor(options)) {
-        return scheme
-    }
+  if (isSchemeBasedOnSeedColor(options)) {
+    return scheme;
+  }
 
-    const core = {
-        a1: scheme.primaryPalette,
-        a2: scheme.secondaryPalette,
-        a3: scheme.tertiaryPalette,
-        n1: scheme.neutralPalette,
-        n2: scheme.neutralVariantPalette,
-        error: scheme.errorPalette,
-    }
+  const core = {
+    a1: scheme.primaryPalette,
+    a2: scheme.secondaryPalette,
+    a3: scheme.tertiaryPalette,
+    n1: scheme.neutralPalette,
+    n2: scheme.neutralVariantPalette,
+    error: scheme.errorPalette,
+  };
 
-    return new DynamicScheme({
-        sourceColorArgb,
-        isDark,
-        contrastLevel,
-        variant,
-        primaryPalette: createPalette(options.primary || options.seedColor, core.a1),
-        secondaryPalette: createPalette(options.secondary, core.a2),
-        tertiaryPalette: createPalette(options.tertiary, core.a3),
-        neutralPalette: createPalette(options.neutral, core.n1),
-        neutralVariantPalette: createPalette(options.neutralVariant, core.n2),
-    })
+  return new DynamicScheme({
+    sourceColorArgb,
+    isDark,
+    contrastLevel,
+    variant,
+    primaryPalette: createPalette(options.primary || options.seedColor, core.a1),
+    secondaryPalette: createPalette(options.secondary, core.a2),
+    tertiaryPalette: createPalette(options.tertiary, core.a3),
+    neutralPalette: createPalette(options.neutral, core.n1),
+    neutralVariantPalette: createPalette(options.neutralVariant, core.n2),
+  });
 }
 
 function createPalette(color: Color | undefined, fallback: TonalPalette) {
-    if (!color) return fallback
-    return createTonalPalette(color)
+  if (!color) return fallback;
+  return createTonalPalette(color);
 }
 
 function isSchemeBasedOnSeedColor(options: SchemeOptions): boolean {
-    const hasColorSource = !!options.seedColor || !!options.primary
-    return (
-        hasColorSource &&
-        !Object.values({
-            secondary: options.secondary,
-            tertiary: options.tertiary,
-            neutral: options.neutral,
-            neutralVariant: options.neutralVariant,
-        }).some(Boolean)
-    )
+  const hasColorSource = !!options.seedColor || !!options.primary;
+  return (
+    hasColorSource &&
+    !Object.values({
+      secondary: options.secondary,
+      tertiary: options.tertiary,
+      neutral: options.neutral,
+      neutralVariant: options.neutralVariant,
+    }).some(Boolean)
+  );
 }

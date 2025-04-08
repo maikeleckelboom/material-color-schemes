@@ -1,18 +1,18 @@
-import {COLOR_SCHEME_KEYS} from "../constants";
+import { COLOR_SCHEME_KEYS } from '../constants';
 
 /**
  * A color value that can be a string (e.g., hex color code) or a number (e.g., ARGB format).
  */
-export type Color = string | number
+export type Color = string | number;
 
 /**
  * A looser version of the original Material color export.
  * Accepts hex strings in `value`, and `blend` is optional.
  */
 export interface CustomColor {
-    name: string
-    value: Color
-    blend?: boolean
+  name: string;
+  value: Color;
+  blend?: boolean;
 }
 
 /**
@@ -21,7 +21,7 @@ export interface CustomColor {
  * @description While technically allowing any string, should primarily use predefined M3 color keys
  * for proper type safety and design system compliance.
  */
-export type ColorKey = typeof COLOR_SCHEME_KEYS[number] | (string & {});
+export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number] | (string & {});
 
 /**
  * Interface representing a complete Material Design 3 color scheme
@@ -30,8 +30,7 @@ export type ColorKey = typeof COLOR_SCHEME_KEYS[number] | (string & {});
  * @description Maps M3 color roles to their actual color values. While extensible via string index,
  * custom properties should follow M3 naming conventions.
  */
-export interface ColorScheme extends Record<ColorKey, number> {
-}
+export interface ColorScheme extends Record<ColorKey, number> {}
 
 /**
  * Utility type for creating color scheme variants with suffix-appended keys
@@ -41,7 +40,7 @@ export interface ColorScheme extends Record<ColorKey, number> {
  * type PrimaryLight = SuffixedColorScheme<'Light'>; // Creates { primaryLight: number, ... }
  */
 type SuffixedColorScheme<Suffix extends string> = {
-    [K in ColorKey as `${K}${Suffix}`]: number;
+  [K in ColorKey as `${K}${Suffix}`]: number;
 };
 
 /**
@@ -56,7 +55,6 @@ export type ColorSchemeLight = SuffixedColorScheme<'Light'>;
  */
 export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
 
-
 /**
  * Return type for color scheme generation based on options
  * @template V - Boolean type for brightness variants flag
@@ -68,10 +66,9 @@ export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
  * // Without variants:
  * type BaseScheme = ColorSchemeReturnType; // Only contains base keys
  */
-export type ColorSchemeReturnType<V extends boolean> =
-    V extends true
-        ? ColorScheme & ColorSchemeLight & ColorSchemeDark
-        : ColorScheme;
+export type ColorSchemeReturnType<V extends boolean> = V extends true
+  ? ColorScheme & ColorSchemeLight & ColorSchemeDark
+  : ColorScheme;
 
 /**
  * Options for generating color schemes
@@ -82,21 +79,19 @@ export type ColorSchemeReturnType<V extends boolean> =
  * @property {Function} [modifyColorScheme] - Post-processing function for scheme customization
  */
 export interface ColorSchemeOptions<V extends boolean = false> {
-    /**
-     * Whether to use the dark scheme
-     * @default false
-     */
-    dark?: boolean
-    /**
-     * Whether to add light and dark variants of the colors
-     * @default false
-     */
-    brightnessVariants?: V;
-    /**
-     * Type-safe color scheme modifier that preserves existing properties
-     * while allowing new property additions
-     */
-    modifyColorScheme?: <T extends ColorSchemeReturnType<V>>(colorScheme: T) => T
-
+  /**
+   * Whether to use the dark scheme
+   * @default false
+   */
+  dark?: boolean;
+  /**
+   * Whether to add light and dark variants of the colors
+   * @default false
+   */
+  brightnessVariants?: V;
+  /**
+   * Type-safe color scheme modifier that preserves existing properties
+   * while allowing new property additions
+   */
+  modifyColorScheme?: <T extends ColorSchemeReturnType<V>>(colorScheme: T) => T;
 }
-

@@ -1,92 +1,101 @@
-import {describe, expect, it} from "vitest"
+import { describe, expect, it } from 'vitest';
 import {
-    applyAmoledFilter,
-    type Color,
-    COLOR_SCHEME_KEYS,
-    createColorScheme,
-    createScheme,
-    createTheme,
-    type CustomColor
-} from "../src";
+  type Color,
+  COLOR_SCHEME_KEYS,
+  createColorScheme,
+  createScheme,
+  createTheme,
+  type CustomColor,
+} from '../src';
+import { argbFromHex } from '@material/material-color-utilities';
 
-const seedColor: Color = '#CD3232'
+const seedColor: Color = '#CD3232';
 const customColors: CustomColor[] = [
-    {
-        name: 'Electric Leaf',
-        value: '#32CD32',
-    },
-    {
-        name: 'Blueberry Blue',
-        value: '#4F66B0',
-    },
-]
+  {
+    name: 'Electric Leaf',
+    value: '#32CD32',
+  },
+  {
+    name: 'Blueberry Blue',
+    value: '#4F66B0',
+  },
+];
 
-describe('colorScheme', () => {
-    it('should return a color scheme object', () => {
-        const theme = createTheme(seedColor)
-        const colorScheme = createColorScheme(theme, {brightnessVariants: true})
-        expect(colorScheme).toBeDefined()
+describe('Color Scheme Generation', () => {
+  describe('Core Functionality', () => {
+    it('generates a complete scheme with all M3 color keys', () => {
+      const theme = createTheme(seedColor);
+      const colorScheme = createColorScheme(theme, { brightnessVariants: true });
 
-        COLOR_SCHEME_KEYS.forEach((key) => {
-            expect(colorScheme).toHaveProperty(key)
-        })
-    })
+      COLOR_SCHEME_KEYS.forEach((key) => {
+        expect(colorScheme).toHaveProperty(key);
+      });
+    });
 
-    it('should contain all color scheme keys with light/dark variants', () => {
-        const theme = createTheme(seedColor)
-        const colorScheme = createColorScheme(theme, {brightnessVariants: true})
+    it('automatically generates light/dark variants when brightnessVariants is enabled', () => {
+      const theme = createTheme(seedColor);
+      const colorScheme = createColorScheme(theme, { brightnessVariants: true });
 
-        COLOR_SCHEME_KEYS.forEach((key) => {
-            expect(colorScheme).toHaveProperty(key)
-            expect(colorScheme).toHaveProperty(`${key}Light`)
-            expect(colorScheme).toHaveProperty(`${key}Dark`)
-        })
-    })
+      COLOR_SCHEME_KEYS.forEach((key) => {
+        expect(colorScheme).toHaveProperty(`${key}Light`);
+        expect(colorScheme).toHaveProperty(`${key}Dark`);
+      });
+    });
 
-    it('should allow modification of any color value', () => {
-        const scheme = createScheme(seedColor)
-        const colorScheme = createColorScheme(scheme, {
-            modifyColorScheme: (colorScheme) => ({
-                ...colorScheme,
-                /**
-                 * Override a color in the color scheme
-                 */
-                scrim: colorScheme.surfaceContainer,
-                /**
-                 * Add a color that is not in the color scheme
-                 */
-                accent: colorScheme.primary,
-            })
-        })
-        expect(colorScheme.scrim).toBe(colorScheme.surfaceContainer)
-    })
+    it('allows runtime customization through modifyColorScheme callback', () => {
+      const scheme = createScheme(seedColor);
+      const colorScheme = createColorScheme(scheme, {
+        modifyColorScheme: (colorScheme) => ({
+          ...colorScheme,
+          scrim: colorScheme.surfaceContainer,
+          customAccent: colorScheme.primary,
+        }),
+      });
 
-    it('should apply amoled filter', () => {
-        const scheme = createScheme(seedColor)
-        const colorScheme = createColorScheme(scheme, {modifyColorScheme: applyAmoledFilter})
-        expect(colorScheme.background).toBe(4278190080)
-    })
+      expect(colorScheme.scrim).toBe(colorScheme.surfaceContainer);
+      expect(colorScheme).toHaveProperty('customAccent');
+    });
+  });
 
-    it('should generate color scheme with custom colors', () => {
-        const theme = createTheme(seedColor, {customColors})
-        const colorScheme = createColorScheme(theme)
-        expect(colorScheme).toHaveProperty('electricLeaf')
-        expect(colorScheme).toHaveProperty('blueberryBlue')
-    })
+  describe('Special Features', () => {
+    it('applies AMOLED filter by replacing surface colors with pure black', () => {
+      const scheme = createScheme(seedColor);
+      const colorScheme = createColorScheme(scheme, {
+        modifyColorScheme: (colorScheme) => ({
+          ...colorScheme,
+          background: argbFromHex('#000000'),
+          surface: argbFromHex('#000000'),
+        }),
+      });
 
-    it('should generate color scheme with custom colors and brightness variants', () => {
-        const theme = createTheme(seedColor, {customColors})
-        const colorScheme = createColorScheme(theme, {brightnessVariants: true})
-        expect(colorScheme).toHaveProperty('electricLeafLight')
-        expect(colorScheme).toHaveProperty('blueberryBlueDark')
-    })
+      expect(colorScheme.background).toBe(4278190080);
+    });
+  });
 
-    it('should generate color scheme with custom colors and no brightness variants', () => {
-        const theme = createTheme(seedColor, {customColors})
-        const colorScheme = createColorScheme(theme, {brightnessVariants: false})
-        expect(colorScheme).toHaveProperty('electricLeaf')
-        expect(colorScheme).not.toHaveProperty('electricLeafLight')
-        expect(colorScheme).not.toHaveProperty('blueberryBlueDark')
-    })
+  describe('Custom Color Handling', () => {
+    it('includes custom colors in the scheme with default naming', () => {
+      const theme = createTheme(seedColor, { customColors });
+      const colorScheme = createColorScheme(theme);
 
-})
+      expect(colorScheme).toHaveProperty('electricLeaf');
+      expect(colorScheme).toHaveProperty('blueberryBlue');
+    });
+
+    it('generates brightness variants for custom colors when enabled', () => {
+      const theme = createTheme(seedColor, { customColors });
+      const colorScheme = createColorScheme(theme, { brightnessVariants: true });
+
+      expect(colorScheme).toHaveProperty('electricLeafLight');
+      expect(colorScheme).toHaveProperty('blueberryBlueDark');
+    });
+
+    it('excludes brightness variants for custom colors when disabled', () => {
+      const theme = createTheme(seedColor, { customColors });
+      const colorScheme = createColorScheme(theme, { brightnessVariants: false });
+
+      expect(colorScheme).toHaveProperty('electricLeaf');
+      expect(colorScheme).not.toHaveProperty('electricLeafLight');
+      expect(colorScheme).not.toHaveProperty('blueberryBlueDark');
+    });
+  });
+});

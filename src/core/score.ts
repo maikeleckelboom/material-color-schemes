@@ -1,5 +1,5 @@
-import {Score} from '@material/material-color-utilities'
-import {DEFAULT_SCORE_OPTIONS} from "../constants";
+import { Score } from '@material/material-color-utilities';
+import { DEFAULT_SCORE_OPTIONS } from '../constants';
 
 /**
  * Default options for ranking colors based on usage counts.
@@ -11,9 +11,9 @@ import {DEFAULT_SCORE_OPTIONS} from "../constants";
  *         grayscale.
  */
 export interface ScoreOptions {
-    desired?: number
-    filter?: boolean
-    fallbackColorARGB?: number
+  desired?: number;
+  filter?: boolean;
+  fallbackColorARGB?: number;
 }
 
 /**
@@ -24,8 +24,8 @@ export interface ScoreOptions {
  * @returns A tuple with the best score followed by additional ranked values.
  */
 export function getRankedSuggestions(
-    colorToCount: Map<number, number>,
-    options: ScoreOptions = DEFAULT_SCORE_OPTIONS
+  colorToCount: Map<number, number>,
+  options: ScoreOptions = DEFAULT_SCORE_OPTIONS,
 ): [number, ...number[]] {
-    return Score.score(colorToCount, options) as [number, ...number[]];
+  return Score.score(colorToCount, options) as [number, ...number[]];
 }

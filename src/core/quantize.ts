@@ -1,5 +1,5 @@
-import {QuantizerCelebi} from "@material/material-color-utilities";
-import {DEFAULT_QUANTIZE_MAX_COLORS} from "../constants";
+import { QuantizerCelebi } from '@material/material-color-utilities';
+import { DEFAULT_QUANTIZE_MAX_COLORS } from '../constants';
 
 /**
  * Quantize an image into a limited number of colors.
@@ -12,8 +12,8 @@ import {DEFAULT_QUANTIZE_MAX_COLORS} from "../constants";
  *     quantized image.
  */
 export function quantizeColors(
-    pixels: number[],
-    maxColors: number = DEFAULT_QUANTIZE_MAX_COLORS,
+  pixels: number[],
+  maxColors: number = DEFAULT_QUANTIZE_MAX_COLORS,
 ): Map<number, number> {
-    return QuantizerCelebi.quantize(pixels, maxColors)
+  return QuantizerCelebi.quantize(pixels, maxColors);
 }

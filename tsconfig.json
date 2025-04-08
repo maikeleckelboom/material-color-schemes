@@ -24,9 +24,7 @@
     "noUnusedLocals": false,
     "noUnusedParameters": false,
     "noPropertyAccessFromIndexSignature": false,
-    "types": [
-      "@vitest/browser/providers/playwright"
-    ],
+    "types": ["@vitest/browser/providers/playwright"],
 
     // # Additional options
     "outDir": "dist",
