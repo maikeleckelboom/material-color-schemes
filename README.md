@@ -1,4 +1,4 @@
-# Material Color Kit (WIP)
+# MD Theme Schemes (WIP)
 
 **Material Color Kit** is a set of tools built to simplify and enhance working with color—especially when creating
 themes and schemes inspired by Material Design. Designed to work alongside [
@@ -27,13 +27,13 @@ in design systems.
 ## 📦 Installation
 
 ```bash
-npm install @material/material-color-utilities md-color-schemes
+npm install @material/material-color-utilities md-theme-schemes
 ```
 
 ## 🚀 Quick Start
 
 ```ts
-import { createTheme, Variant, ContrastLevel } from 'md-color-schemes';
+import { createTheme, Variant, ContrastLevel } from 'md-theme-schemes';
 
 const theme = createTheme('#6200EE', {
   primary: '#3700B3',
@@ -43,7 +43,7 @@ const theme = createTheme('#6200EE', {
   neutralVariant: '#F5F5F5',
   variant: Variant.TONAL_SPOT,
   contrastLevel: ContrastLevel.DEFAULT,
-  customColors: [
+  staticColors: [
     {
       name: 'My Custom Color',
       value: '#FF5733'

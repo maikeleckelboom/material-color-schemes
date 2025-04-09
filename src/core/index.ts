@@ -1,5 +1,6 @@
 // Configuration and settings
 export {
+  Variant,
   ContrastLevel,
   getClosestContrastLevel,
   listContrastLevels,

@@ -3,7 +3,7 @@ import {
   DynamicScheme,
   TonalPalette,
 } from '@material/material-color-utilities';
-import { Variant } from '../core/config';
+import { Variant } from '../core';
 import type { SchemeOptions } from './scheme.ts';
 import type { CustomColor } from './color-scheme.ts';
 
@@ -27,5 +27,5 @@ export interface Theme {
 }
 
 export type ThemeOptions = Omit<SchemeOptions, 'isDark'> & {
-  customColors?: CustomColor[];
+  staticColors?: CustomColor[];
 };

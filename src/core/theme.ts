@@ -19,7 +19,7 @@ import { convertToArgb } from './conversion.ts';
  * createTheme({
  *   seedColor: 0x00ff00,
  *   variant: Variant.EXPRESSIVE,
- *   customColors: [/* ... *\/]
+ *   staticColors: [/* ... *\/]
  * });
  *
  * @returns {Theme} Complete theme object with light/dark schemes and palettes
@@ -45,7 +45,7 @@ export function createTheme(
     neutralVariant,
     contrastLevel = ContrastLevel.DEFAULT,
     variant = Variant.TONAL_SPOT,
-    customColors = [],
+    staticColors = [],
   } = options;
 
   const seedColor = convertToArgb(options.seedColor ?? options.primary ?? 0);
@@ -93,6 +93,6 @@ export function createTheme(
         : core.n2,
       error: core.error,
     },
-    customColors: customColors.map((color) => createCustomColor(seedColor, color)),
+    customColors: staticColors.map((color) => createCustomColor(seedColor, color)),
   };
 }
