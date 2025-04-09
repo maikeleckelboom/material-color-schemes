@@ -17,7 +17,7 @@ export function createTonalPalette(color: Color): TonalPalette {
 
 export function getColorsFromPalette(
   tonalPalette: Color | TonalPalette,
-  paletteTones: number[] = DEFAULT_PALETTE_TONES,
+  paletteTones: number[] = [...DEFAULT_PALETTE_TONES],
 ): Record<number, number> {
   if (!(tonalPalette instanceof TonalPalette)) {
     tonalPalette = createTonalPalette(tonalPalette);

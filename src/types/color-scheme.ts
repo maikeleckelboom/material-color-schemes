@@ -32,6 +32,10 @@ export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number] | (string & {});
  */
 export interface ColorScheme extends Record<ColorKey, number> {}
 
+export type CustomColorScheme<T extends Record<string, number>> = T & {
+  [key: string]: number;
+};
+
 /**
  * Utility type for creating color scheme variants with suffix-appended keys
  * @template Suffix - String suffix to append to color keys

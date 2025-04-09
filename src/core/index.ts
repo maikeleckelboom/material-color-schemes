@@ -42,4 +42,4 @@ export { formatColorName, formatCssVarName } from './format.ts';
 export { colorSchemeToCssVars } from './css-vars.ts';
 
 // Analysis and recommendations
-export { getRankedSuggestions, type ScoreOptions } from './score.ts';
+export { getRankedSuggestions, type ScoreOptions } from './scoring.ts';
