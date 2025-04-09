@@ -35,11 +35,11 @@ export { createCustomColor } from './color.ts';
 export { quantizeColors } from './quantize.ts';
 
 // Palette generation and management
-export { createTonalPalette, createTonalPaletteColors } from './palette.ts';
+export { createTonalPalette, createTonalPaletteColors, getTonalPaletteColors } from './palette.ts';
 
 // Contrast and accessibility
 export { getContrastRatioOfTones, getContrastColor, isContrasting } from './contrast.ts';
 export { isDisliked, fixIfDisliked } from './dislike.ts';
 
 // Analysis and recommendations
-export { getRankedSuggestions, type ScoreOptions } from './scoring.ts';
+export { scoreColorToCount, type ScoreOptions } from './scoring.ts';

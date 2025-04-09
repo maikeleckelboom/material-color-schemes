@@ -23,7 +23,7 @@ export interface ScoreOptions {
  * @param options - ScoreOptions (official naming) for computing rankings.
  * @returns A tuple with the best score followed by additional ranked values.
  */
-export function getRankedSuggestions(
+export function scoreColorToCount(
   colorToCount: Map<number, number>,
   options: ScoreOptions = DEFAULT_SCORE_OPTIONS,
 ): [number, ...number[]] {

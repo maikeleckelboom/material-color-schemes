@@ -1,10 +1,11 @@
 import {
-  argbFromHex,
   Hct,
+  argbFromHex,
   hexFromArgb,
   labFromArgb,
   lstarFromArgb,
   rgbaFromArgb,
+  type Rgba,
 } from '@material/material-color-utilities';
 import type { Color } from '../types';
 
@@ -19,36 +20,32 @@ export function convertToArgb(color: Color) {
   return color;
 }
 
-/** Convert ARGB color to RGB format */
-export function convertToRgb(color: Color): string {
+/** Convert ARGB or HEX color to RGB format */
+export function convertToRgb(color: Color): Rgba {
   const argbColor = convertToArgb(color);
-  const rgbColor = rgbaFromArgb(argbColor);
-  return `rgb(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b})`;
+  return rgbaFromArgb(argbColor);
 }
 
-/** Convert ARGB color to hex format */
+/** Convert ARGB or HEX color to hex format */
 export function convertToHex(color: Color): string {
   const argbColor = convertToArgb(color);
   return hexFromArgb(argbColor);
 }
 
-/** Convert ARGB color to HCT format */
+/** Convert ARGB or HEX color to HCT format */
 export function convertToHct(color: Color): Hct {
   const argbColor = convertToArgb(color);
   return Hct.fromInt(argbColor);
 }
 
-/**
- * Convert a ARGB or HEX color to LAB format
- */
-export function convertToLab(color: Color) {
-  const argb = convertToArgb(color);
-  return labFromArgb(argb);
+/* Convert a ARGB or HEX color to LAB format */
+export function convertToLab(color: Color): number[] {
+  const argbColor = convertToArgb(color);
+  return labFromArgb(argbColor);
 }
 
-/**
- * Measures the lightness of a color in the CIE L*a*b* color space.
- */
+/** Measures the lightness of a color in the CIE L*a*b* color space */
 export function convertToLstar(color: Color): number {
-  return lstarFromArgb(convertToArgb(color));
+  const argbColor = convertToArgb(color);
+  return lstarFromArgb(argbColor);
 }

@@ -33,32 +33,35 @@ npm install @material/material-color-utilities material-color-kit
 ## 🚀 Quick Start
 
 ```ts
-import { createScheme, createTheme } from 'material-color-kit';
-import { DynamicScheme, Theme } from '@material/material-color-utilities';
-
-const scheme = createScheme('#6200EE', {
-  primary: '#3700B3',
-  secondary: '#03DAC6',
-});
+import { createTheme, Variant, ContrastLevel } from 'material-color-kit';
 
 const theme = createTheme('#6200EE', {
   primary: '#3700B3',
   secondary: '#03DAC6',
-});
-```
-
-```ts
-import { generateColorScheme, formatCssVars } from 'material-color-kit';
-
-const theme = createTheme('#6200EE', {
-  primary: '#3700B3',
-  secondary: '#03DAC6',
+  tertiary: '#FF9800',
+  neutral: '#FFFFFF',
+  neutralVariant: '#F5F5F5',
+  variant: Variant.TONAL_SPOT,
+  contrastLevel: ContrastLevel.DEFAULT,
+  customColors: [
+    {
+      name: 'My Custom Color',
+      value: '#FF5733'
+    },
+    {
+      name: 'My Other Color',
+      value: '#AB47BC',
+      blend: true
+    }
+  ]
 });
 
 const colorScheme = generateColorScheme(theme, {
   dark: true,
+  brightnessVariants: true,
   modifyColorScheme: (colorScheme) => ({
     ...colorScheme,
+    tertiary: '#CE93D8',
     accent: '#FF5733',
   })
 })
