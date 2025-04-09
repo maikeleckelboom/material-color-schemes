@@ -19,17 +19,17 @@ export function convertToArgb(color: Color) {
   return color;
 }
 
-/** Convert ARGB color to hex format */
-export function convertToHex(color: Color): string {
-  const argbColor = convertToArgb(color);
-  return hexFromArgb(argbColor);
-}
-
 /** Convert ARGB color to RGB format */
 export function convertToRgb(color: Color): string {
   const argbColor = convertToArgb(color);
   const rgbColor = rgbaFromArgb(argbColor);
   return `rgb(${rgbColor.r}, ${rgbColor.g}, ${rgbColor.b})`;
+}
+
+/** Convert ARGB color to hex format */
+export function convertToHex(color: Color): string {
+  const argbColor = convertToArgb(color);
+  return hexFromArgb(argbColor);
 }
 
 /** Convert ARGB color to HCT format */
@@ -39,8 +39,7 @@ export function convertToHct(color: Color): Hct {
 }
 
 /**
- * Convert ARGB color to Lab format
- * @param color - The color to convert, in ARGB or HEX format
+ * Convert a ARGB or HEX color to LAB format
  */
 export function convertToLab(color: Color) {
   const argb = convertToArgb(color);
@@ -48,12 +47,8 @@ export function convertToLab(color: Color) {
 }
 
 /**
- * Get the l* value from a color.
- * (L* is a measure of lightness in the CIE L*a*b* color space.)
- *
- * @param color The color as a string (hex) or ARGB value.
- * @returns The l* value of the color.
+ * Measures the lightness of a color in the CIE L*a*b* color space.
  */
-export function lstarFromColor(color: Color): number {
+export function convertToLstar(color: Color): number {
   return lstarFromArgb(convertToArgb(color));
 }

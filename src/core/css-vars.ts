@@ -1,7 +1,8 @@
 import { convertToHex } from './conversion';
-import { formatCssVarName } from './format.ts';
+import { formatCssVarName } from './formatting.ts';
 import type { Color } from '../types';
 
+// tooo: delete because of duplicate as in formatting.ts
 export function colorSchemeToCssVars<T extends Record<string, Color>>(
   colorScheme: T,
   cssSelector?: string,

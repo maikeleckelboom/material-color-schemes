@@ -1,5 +1,7 @@
 import camelCase from 'camelcase';
 import kebabCase from 'kebab-case';
+import type { Color } from '../types';
+import { convertToHex } from './conversion.ts';
 
 /**
  * Format color name using template pattern
@@ -28,4 +30,14 @@ export type CssVarName<T extends string> = `--${Lowercase<T>}`;
  */
 export function formatCssVarName<T extends string>(key: T): CssVarName<T> {
   return `--${kebabCase(key)}` as CssVarName<T>;
+}
+
+export function formatCssVars<T extends Record<string, Color>>(
+  colorScheme: T,
+  cssSelector?: string,
+): string {
+  const cssVars = Object.entries(colorScheme)
+    .map(([key, value]) => `${formatCssVarName(key)}: ${convertToHex(value)};`)
+    .join(' ');
+  return cssSelector ? `${cssSelector} { ${cssVars} }` : cssVars;
 }

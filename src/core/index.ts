@@ -17,29 +17,29 @@ export { createTheme } from './theme';
 export { createScheme } from './scheme';
 export { createColorScheme } from './color-scheme.ts';
 
-// Color manipulation and conversion
+// conversion.ts – For color-space transformations
 export {
   convertToArgb,
   convertToHex,
   convertToHct,
   convertToLab,
   convertToRgb,
-  lstarFromColor,
+  convertToLstar,
 } from './conversion.ts';
+
+// formatting.ts – For string/UI representations
+export { formatColorName, formatCssVarName, formatCssVars } from './formatting.ts';
+
 export { harmonize, blendHue, blendCam } from './blend.ts';
 export { createCustomColor } from './color.ts';
 export { quantizeColors } from './quantize.ts';
 
 // Palette generation and management
-export { createTonalPalette, getColorsFromPalette } from './palette.ts';
+export { createTonalPalette, createTonalPaletteColors } from './palette.ts';
 
 // Contrast and accessibility
 export { getContrastRatioOfTones, getContrastColor, isContrasting } from './contrast.ts';
 export { isDisliked, fixIfDisliked } from './dislike.ts';
-
-// Formatting and output
-export { formatColorName, formatCssVarName } from './format.ts';
-export { colorSchemeToCssVars } from './css-vars.ts';
 
 // Analysis and recommendations
 export { getRankedSuggestions, type ScoreOptions } from './scoring.ts';

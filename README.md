@@ -48,7 +48,7 @@ const theme = createTheme('#6200EE', {
 ```
 
 ```ts
-import { generateColorScheme, colorSchemeToCssVars } from 'material-color-kit';
+import { generateColorScheme, formatCssVars } from 'material-color-kit';
 
 const theme = createTheme('#6200EE', {
   primary: '#3700B3',
@@ -63,5 +63,5 @@ const colorScheme = generateColorScheme(theme, {
   })
 })
 
-const cssVariables = colorSchemeToCssVars(colorScheme)
+const cssVariables = formatCssVars(colorScheme)
 ```

@@ -7,8 +7,8 @@ import type { Color } from '../types';
  * hue, in a way that leaves the original color recognizable and
  * recognizably shifted towards the key color.
  *
- * @param designColor ARGB representation of an arbitrary color.
- * @param sourceColor ARGB representation of the main theme color.
+ * @param designColor ARGB or HEX representation of an arbitrary color.
+ * @param sourceColor ARGB or HEX representation of the main theme color.
  * @return The design color with a hue shifted towards the
  * system's color, a slightly warmer/cooler variant of the design
  * color's hue.
@@ -21,27 +21,31 @@ export function harmonize(designColor: Color, sourceColor: Color): number {
  * Blends hue from one color into another. The chroma and tone of
  * the original color are maintained.
  *
- * @param from ARGB representation of color
- * @param to ARGB representation of color
+ * @param from ARGB or HEX representation of color
+ * @param to ARGB or HEX representation of color
  * @param amount how much blending to perform; 0.0 >= and <= 1.0
  * @return from, with a hue blended towards to. Chroma and tone
  * are constant.
  */
-export function blendHue(from: number, to: number, amount: number): number {
+export function blendHue(from: Color, to: Color, amount: number): number {
+  const fromArgb = convertToArgb(from);
+  const toArgb = convertToArgb(to);
   const clampedAmount = Math.max(0, Math.min(1, amount));
-  return Blend.hctHue(from, to, clampedAmount);
+  return Blend.hctHue(fromArgb, toArgb, clampedAmount);
 }
 
 /**
  * Blend in CAM16-UCS space.
  *
- * @param from ARGB representation of color
- * @param to ARGB representation of color
+ * @param from ARGB or HEX representation of color
+ * @param to ARGB or HEX representation of color
  * @param amount how much blending to perform; 0.0 >= and <= 1.0
  * @return from, blended towards to. Hue, chroma, and tone will
  * change.
  */
-export function blendCam(from: number, to: number, amount: number): number {
+export function blendCam(from: Color, to: Color, amount: number): number {
+  const fromArgb = convertToArgb(from);
+  const toArgb = convertToArgb(to);
   const clampedAmount = Math.max(0, Math.min(1, amount));
-  return Blend.cam16Ucs(from, to, clampedAmount);
+  return Blend.cam16Ucs(fromArgb, toArgb, clampedAmount);
 }

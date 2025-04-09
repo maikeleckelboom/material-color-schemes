@@ -3,24 +3,23 @@ import { convertToArgb } from './conversion.ts';
 import { DEFAULT_PALETTE_TONES } from '../constants';
 import type { Color } from '../types';
 
-function getColorsForTonesFromPalette(tonalPalette: TonalPalette, paletteTones: number[]) {
-  const result: Record<number, number> = {};
-  for (const tone of paletteTones) {
-    result[tone] = tonalPalette.tone(tone);
-  }
-  return result;
-}
-
 export function createTonalPalette(color: Color): TonalPalette {
   return TonalPalette.fromInt(convertToArgb(color));
 }
 
-export function getColorsFromPalette(
-  tonalPalette: Color | TonalPalette,
+export function createTonalPaletteColors(
+  colorOrPalette: Color | TonalPalette,
   paletteTones: number[] = [...DEFAULT_PALETTE_TONES],
 ): Record<number, number> {
-  if (!(tonalPalette instanceof TonalPalette)) {
-    tonalPalette = createTonalPalette(tonalPalette);
+  if (!(colorOrPalette instanceof TonalPalette)) {
+    colorOrPalette = createTonalPalette(colorOrPalette);
   }
-  return getColorsForTonesFromPalette(tonalPalette, paletteTones);
+  return getTonalPaletteColors(colorOrPalette, paletteTones);
+}
+
+export function getTonalPaletteColors(
+  palette: TonalPalette,
+  tones: number[],
+): Record<number, number> {
+  return Object.fromEntries(tones.map((tone) => [tone, palette.tone(tone)]));
 }

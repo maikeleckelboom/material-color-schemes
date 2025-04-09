@@ -2,7 +2,7 @@ import camelcase from 'camelcase';
 import { type CustomColorGroup, DynamicScheme } from '@material/material-color-utilities';
 import type { ColorScheme, ColorSchemeOptions, ColorSchemeReturnType, Theme } from '../types';
 import { COLOR_SCHEME_KEYS } from '../constants';
-import { formatColorName } from './format.ts';
+import { formatColorName } from './formatting.ts';
 
 /**
  * Generates a color scheme from a Theme or DynamicScheme object, with support for dark mode,
@@ -41,7 +41,7 @@ export function createColorScheme(scheme: DynamicScheme, options?: ColorSchemeOp
 export function createColorScheme(
   input: Theme | DynamicScheme,
   options?: ColorSchemeOptions,
-): ColorScheme {
+): ColorSchemeReturnType<typeof options extends { brightnessVariants: true } ? true : false> {
   if ('schemes' in input) {
     const theme = input as Theme;
     const themeOptions = options as ColorSchemeOptions;
