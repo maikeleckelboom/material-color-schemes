@@ -27,13 +27,13 @@ in design systems.
 ## 📦 Installation
 
 ```bash
-npm install @material/material-color-utilities material-color-kit
+npm install @material/material-color-utilities md-color-schemes
 ```
 
 ## 🚀 Quick Start
 
 ```ts
-import { createTheme, Variant, ContrastLevel } from 'material-color-kit';
+import { createTheme, Variant, ContrastLevel } from 'md-color-schemes';
 
 const theme = createTheme('#6200EE', {
   primary: '#3700B3',
@@ -49,7 +49,7 @@ const theme = createTheme('#6200EE', {
       value: '#FF5733'
     },
     {
-      name: 'My Other Color',
+      name: 'My Custom Color 2',
       value: '#AB47BC',
       blend: true
     }
@@ -66,5 +66,5 @@ const colorScheme = generateColorScheme(theme, {
   })
 })
 
-const cssVariables = formatCssVars(colorScheme)
+const cssVariables = formatCssVarMapping(colorScheme)
 ```

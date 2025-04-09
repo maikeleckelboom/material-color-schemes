@@ -32,7 +32,15 @@ export function formatCssVarName<T extends string>(key: T): CssVarName<T> {
   return `--${kebabCase(key)}` as CssVarName<T>;
 }
 
-export function formatCssVars<T extends Record<string, Color>>(
+/**
+ * Format a color scheme to CSS variable mapping
+ * - stringifyCssVars
+ *
+ * @param colorScheme The color scheme to format
+ * @param cssSelector The CSS selector to use
+ * @returns The formatted CSS variable mapping
+ */
+export function formatCssVarMapping<T extends Record<string, Color>>(
   colorScheme: T,
   cssSelector?: string,
 ): string {

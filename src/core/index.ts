@@ -6,15 +6,10 @@ export {
   listVariants,
   type ConfigOption,
 } from './config';
-export {
-  DEFAULT_PALETTE_TONES,
-  DEFAULT_SCORE_OPTIONS,
-  DEFAULT_QUANTIZE_MAX_COLORS,
-} from '../constants';
 
 // Theme and scheme creation
-export { createTheme } from './theme';
 export { createScheme } from './scheme';
+export { createTheme } from './theme';
 export { createColorScheme } from './color-scheme.ts';
 
 // conversion.ts – For color-space transformations
@@ -28,7 +23,7 @@ export {
 } from './conversion.ts';
 
 // formatting.ts – For string/UI representations
-export { formatColorName, formatCssVarName, formatCssVars } from './formatting.ts';
+export { formatColorName, formatCssVarName, formatCssVarMapping } from './formatting.ts';
 
 export { harmonize, blendHue, blendCam } from './blend.ts';
 export { createCustomColor } from './color.ts';

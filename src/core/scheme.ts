@@ -15,7 +15,7 @@ import { ContrastLevel } from './config';
  *
  * When only a seed (or primary) color is provided and no additional color options
  * (e.g. secondary, tertiary) are specified, the generated scheme will base all palettes
- * on that single source.
+ * on that single source in combination with the default tonal palette.
  *
  * @overload
  * @param {Color} seedColor - The seed color used to generate the scheme.

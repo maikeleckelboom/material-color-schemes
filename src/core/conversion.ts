@@ -12,9 +12,6 @@ import type { Color } from '../types';
 /** Convert color to ARGB format */
 export function convertToArgb(color: Color) {
   if (typeof color === 'string') {
-    if (!/^#?([0-9a-f]{3,4}|[0-9a-f]{6}|[0-9a-f]{8})$/i.test(color)) {
-      throw new Error(`Invalid color format: ${color}`);
-    }
     return argbFromHex(color);
   }
   return color;
@@ -38,7 +35,7 @@ export function convertToHct(color: Color): Hct {
   return Hct.fromInt(argbColor);
 }
 
-/* Convert a ARGB or HEX color to LAB format */
+/** Convert a ARGB or HEX color to LAB format */
 export function convertToLab(color: Color): number[] {
   const argbColor = convertToArgb(color);
   return labFromArgb(argbColor);
