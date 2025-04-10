@@ -1,16 +1,16 @@
 import { TonalPalette } from '@material/material-color-utilities';
-import { convertToArgb, convertToHct } from './conversion.ts';
+import { toArgb, toHct } from './conversion.ts';
 import { DEFAULT_PALETTE_TONES } from '../constants';
 import type { Color } from '../types';
 
 /**
- * Creates a TonalPalette which is a convenience class for retrieving colors
+ * Creates a TonalPalette, which is a convenience class for retrieving colors
  * that are constant in hue and chroma, but vary in tone.
  * @param color - The base color.
  * @returns A TonalPalette instance.
  */
 export function createPalette(color: Color): TonalPalette {
-  return TonalPalette.fromInt(convertToArgb(color));
+  return TonalPalette.fromInt(toArgb(color));
 }
 
 /**
@@ -19,7 +19,7 @@ export function createPalette(color: Color): TonalPalette {
  * @param tones - An array of tone values.
  * @returns An object mapping tone values to color values.
  */
-export function extractPaletteColors(
+export function getPaletteColors(
   palette: TonalPalette,
   tones: number[] = [...DEFAULT_PALETTE_TONES],
 ): Record<number, number> {
@@ -33,7 +33,7 @@ export function extractPaletteColors(
  * @returns True if the color is in the palette, false otherwise.
  */
 export function isColorInPalette(palette: TonalPalette, color: Color): boolean {
-  const hct = convertToHct(color);
+  const hct = toHct(color);
   return hct.hue === palette.hue && hct.chroma === palette.chroma;
 }
 

@@ -1,5 +1,5 @@
 import type { Color, ColorScheme } from '../types';
-import { convertToHex } from './conversion.ts';
+import { toHex } from './conversion.ts';
 import { formatCssVarName } from './formatting.ts';
 
 /**
@@ -9,16 +9,16 @@ import { formatCssVarName } from './formatting.ts';
  * @returns A record of `--kebab-case-name` to hex value
  *
  * @example
- * buildCssVarMapping({ Primary: '#ff0000' })
+ * createCssVarMap({ Primary: '#ff0000' })
  * // → { '--primary': '#ff0000' }
  */
-export function buildCssVarMapping<T extends Record<string, Color>>(
+export function createCssVarMap<T extends Record<string, Color>>(
   colorScheme: T,
 ): Record<string, string> {
   return Object.fromEntries(
     Object.entries(colorScheme).map(([key, value]) => [
       formatCssVarName(key),
-      convertToHex(value),
+      toHex(value),
     ]),
   );
 }
@@ -31,14 +31,14 @@ export function buildCssVarMapping<T extends Record<string, Color>>(
  * @returns A CSS string (with or without selector)
  *
  * @example
- * stringifyCssVarMapping({ '--primary': '#ff0000' })
+ * serializeCssVarMap({ '--primary': '#ff0000' })
  * // → "--primary: #ff0000;"
  *
  * @example
- * stringifyCssVarMapping({ '--primary': '#ff0000' }, ':root')
+ * serializeCssVarMap({ '--primary': '#ff0000' }, ':root')
  * // → ":root { --primary: #ff0000; }"
  */
-export function stringifyCssVarMapping(
+export function serializeCssVarMap(
   mapping: Record<string, string>,
   selector?: string,
 ): string {
@@ -56,6 +56,6 @@ export function stringifyCssVarMapping(
  * @returns A string containing the CSS variable definitions.
  */
 export function createCssVariables(colorScheme: ColorScheme, selector?: string): string {
-  const cssVarMapping = buildCssVarMapping(colorScheme);
-  return stringifyCssVarMapping(cssVarMapping, selector);
+  const cssVarMapping = createCssVarMap(colorScheme);
+  return serializeCssVarMap(cssVarMapping, selector);
 }

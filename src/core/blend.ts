@@ -1,5 +1,5 @@
 import { Blend } from '@material/material-color-utilities';
-import { convertToArgb } from './conversion.ts';
+import { toArgb } from './conversion.ts';
 import type { Color } from '../types';
 
 /**
@@ -14,7 +14,7 @@ import type { Color } from '../types';
  * color's hue.
  */
 export function harmonize(designColor: Color, sourceColor: Color): number {
-  return Blend.harmonize(convertToArgb(designColor), convertToArgb(sourceColor));
+  return Blend.harmonize(toArgb(designColor), toArgb(sourceColor));
 }
 
 /**
@@ -28,8 +28,8 @@ export function harmonize(designColor: Color, sourceColor: Color): number {
  * are constant.
  */
 export function blendHue(from: Color, to: Color, amount: number): number {
-  const fromArgb = convertToArgb(from);
-  const toArgb = convertToArgb(to);
+  const fromArgb = toArgb(from);
+  const toArgb = toArgb(to);
   const clampedAmount = Math.max(0, Math.min(1, amount));
   return Blend.hctHue(fromArgb, toArgb, clampedAmount);
 }
@@ -44,8 +44,8 @@ export function blendHue(from: Color, to: Color, amount: number): number {
  * change.
  */
 export function blendCam(from: Color, to: Color, amount: number): number {
-  const fromArgb = convertToArgb(from);
-  const toArgb = convertToArgb(to);
+  const fromArgb = toArgb(from);
+  const toArgb = toArgb(to);
   const clampedAmount = Math.max(0, Math.min(1, amount));
   return Blend.cam16Ucs(fromArgb, toArgb, clampedAmount);
 }

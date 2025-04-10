@@ -7,7 +7,7 @@ import type {
 } from '../types';
 import { COLOR_SCHEME_KEYS } from '../constants';
 import { formatColorPattern, formatTokenName } from './formatting.ts';
-import { extractPaletteColors } from './palette.ts';
+import { getPaletteColors } from './palette.ts';
 
 /**
  * Generates a color scheme from a Theme or DynamicScheme, supporting dark mode,
@@ -53,7 +53,7 @@ function createFromTheme(theme: Theme, options: ColorSchemeOptions = {}): ColorS
   const {
     dark = false,
     brightnessVariants = false,
-    paletteTones,
+    paletteTones = false,
     modifyColorScheme,
   } = options;
 
@@ -62,20 +62,20 @@ function createFromTheme(theme: Theme, options: ColorSchemeOptions = {}): ColorS
   const scheme: ColorScheme = {};
 
   if (paletteTones) {
-    Object.assign(scheme, derivePaletteColorsFromTheme(theme, paletteTones));
+    Object.assign(scheme, createPaletteFromTheme(theme, paletteTones));
   }
 
   Object.assign(
     scheme,
-    deriveColorsFromScheme(baseScheme),
-    deriveCustomColorsFromTheme(theme, options),
+    createColorsFromScheme(baseScheme),
+    createCustomColorsFromTheme(theme, options),
   );
 
   if (brightnessVariants) {
     Object.assign(
       scheme,
-      deriveColorsFromScheme(theme.schemes.light, 'light'),
-      deriveColorsFromScheme(theme.schemes.dark, 'dark'),
+      createColorsFromScheme(theme.schemes.light, 'light'),
+      createColorsFromScheme(theme.schemes.dark, 'dark'),
     );
   }
 
@@ -87,12 +87,11 @@ function createFromScheme(
   options?: ColorSchemeOptions,
 ): ColorScheme {
   return (
-    options?.modifyColorScheme?.(deriveColorsFromScheme(scheme)) ??
-    deriveColorsFromScheme(scheme)
+    options?.modifyColorScheme?.(createColorsFromScheme(scheme)) ??
+    createColorsFromScheme(scheme)
   );
 }
-
-export function deriveCustomColorsFromTheme(
+export function createCustomColorsFromTheme(
   theme: Theme,
   options: ColorSchemeOptions = {},
 ): ColorScheme {
@@ -122,13 +121,24 @@ export function deriveCustomColorsFromTheme(
   return Object.assign({}, ...customColors);
 }
 
-export function derivePaletteColorsFromTheme(theme: Theme, tones: number[]) {
+export function createPaletteFromTheme(theme: Theme, tones: number[]) {
   const tonalColors: Record<string, string> = {};
   for (const [name, palette] of Object.entries(theme.palettes)) {
-    const paletteColors = extractPaletteColors(palette, tones);
+    const paletteColors = getPaletteColors(palette, tones);
     Object.assign(tonalColors, mapPaletteToTonalKeys(name, paletteColors));
   }
   return tonalColors;
+}
+
+export function createColorsFromScheme(
+  scheme: DynamicScheme,
+  suffix?: string,
+): ColorScheme {
+  return COLOR_SCHEME_KEYS.reduce((acc, key) => {
+    const colorName = formatTokenName(key, { suffix });
+    acc[colorName] = scheme[key];
+    return acc;
+  }, {} as ColorScheme);
 }
 
 export function mapPaletteToTonalKeys(
@@ -141,15 +151,4 @@ export function mapPaletteToTonalKeys(
     tonalKeys[key] = color;
   }
   return tonalKeys;
-}
-
-export function deriveColorsFromScheme(
-  scheme: DynamicScheme,
-  suffix?: string,
-): ColorScheme {
-  return COLOR_SCHEME_KEYS.reduce((acc, key) => {
-    const colorName = formatTokenName(key, { suffix });
-    acc[colorName] = scheme[key];
-    return acc;
-  }, {} as ColorScheme);
 }

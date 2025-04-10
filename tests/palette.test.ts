@@ -1,6 +1,6 @@
 import { beforeAll, describe, expect, it } from 'vitest';
 import { TonalPalette } from '@material/material-color-utilities';
-import { createPalette, DEFAULT_PALETTE_TONES, extractPaletteColors } from '../src';
+import { createPalette, DEFAULT_PALETTE_TONES, getPaletteColors } from '../src';
 
 describe('Tonal Palette Creation', () => {
   describe('createPalette', () => {
@@ -23,7 +23,7 @@ describe('Tonal Palette Creation', () => {
     });
   });
 
-  describe('extractPaletteColors', () => {
+  describe('getPaletteColors', () => {
     const testColor: string = '#40A127';
     const defaultTones: number[] = [...DEFAULT_PALETTE_TONES];
     const customTones: number[] = [0, 50, 100];
@@ -35,7 +35,7 @@ describe('Tonal Palette Creation', () => {
 
     const runTestCase = (testCase: { tones: number[]; expectedKeys: string[] }) => {
       const { tones, expectedKeys } = testCase;
-      const toneMap = extractPaletteColors(palette, tones);
+      const toneMap = getPaletteColors(palette, tones);
       expect(Object.keys(toneMap)).toEqual(expectedKeys);
     };
 
@@ -46,7 +46,7 @@ describe('Tonal Palette Creation', () => {
 
     it('should use palette.tone() for each specified tone', () => {
       const testTones: number[] = [0, 20, 40, 60, 100];
-      const toneMap = extractPaletteColors(palette, testTones);
+      const toneMap = getPaletteColors(palette, testTones);
 
       testTones.forEach((tone: number) => {
         expect(toneMap[tone]).toBe(palette.tone(tone));
@@ -56,8 +56,8 @@ describe('Tonal Palette Creation', () => {
     it('should produce consistent mappings regardless of input color format', () => {
       const hexPalette = createPalette(testColor);
       const argbPalette = createPalette(0xff40a127);
-      const hexMapping = extractPaletteColors(hexPalette, defaultTones);
-      const argbMapping = extractPaletteColors(argbPalette, defaultTones);
+      const hexMapping = getPaletteColors(hexPalette, defaultTones);
+      const argbMapping = getPaletteColors(argbPalette, defaultTones);
       expect(hexMapping).toEqual(argbMapping);
     });
 
@@ -65,7 +65,7 @@ describe('Tonal Palette Creation', () => {
       const originalTones: number[] = [10, 20];
       const tonesCopy = [...originalTones];
       const hexPalette = createPalette(testColor);
-      extractPaletteColors(hexPalette, originalTones);
+      getPaletteColors(hexPalette, originalTones);
       expect(originalTones).toEqual(tonesCopy);
     });
   });

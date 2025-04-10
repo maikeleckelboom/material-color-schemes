@@ -3,7 +3,7 @@ import {
   type CustomColorGroup,
   lstarFromArgb,
 } from '@material/material-color-utilities';
-import { convertToArgb } from './conversion.ts';
+import { toArgb } from './conversion.ts';
 import type { Color, StaticColor } from '../types';
 
 /**
@@ -18,7 +18,7 @@ export function createCustomColor(
   staticColor: StaticColor,
 ): CustomColorGroup {
   const { name, blend = false } = staticColor;
-  const source = convertToArgb(sourceColor);
-  const value = convertToArgb(staticColor.value);
+  const source = toArgb(sourceColor);
+  const value = toArgb(staticColor.value);
   return toCustomColor(source, { name, value, blend });
 }

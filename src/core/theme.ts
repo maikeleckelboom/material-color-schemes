@@ -4,7 +4,7 @@ import { ContrastLevel, Variant } from './config';
 import { createScheme } from './scheme.ts';
 import { createCustomColor } from './color.ts';
 import { TonalPalette } from '@material/material-color-utilities';
-import { convertToArgb } from './conversion.ts';
+import { toArgb } from './conversion.ts';
 
 /**
  * Creates a Material Design theme from a source color or theme options.
@@ -51,7 +51,7 @@ export function createTheme(
     staticColors = [],
   } = options;
 
-  const sourceColor = convertToArgb(options.sourceColor ?? options.primary ?? 0);
+  const sourceColor = toArgb(options.sourceColor ?? options.primary ?? 0);
 
   const newScheme = (isDark: boolean) =>
     createScheme({
@@ -87,12 +87,12 @@ export function createTheme(
       dark: darkScheme,
     },
     palettes: {
-      primary: TonalPalette.fromInt(convertToArgb(primary || sourceColor)),
-      secondary: secondary ? TonalPalette.fromInt(convertToArgb(secondary)) : core.a2,
-      tertiary: tertiary ? TonalPalette.fromInt(convertToArgb(tertiary)) : core.a3,
-      neutral: neutral ? TonalPalette.fromInt(convertToArgb(neutral)) : core.n1,
+      primary: TonalPalette.fromInt(toArgb(primary || sourceColor)),
+      secondary: secondary ? TonalPalette.fromInt(toArgb(secondary)) : core.a2,
+      tertiary: tertiary ? TonalPalette.fromInt(toArgb(tertiary)) : core.a3,
+      neutral: neutral ? TonalPalette.fromInt(toArgb(neutral)) : core.n1,
       neutralVariant: neutralVariant
-        ? TonalPalette.fromInt(convertToArgb(neutralVariant))
+        ? TonalPalette.fromInt(toArgb(neutralVariant))
         : core.n2,
       error: core.error,
     },

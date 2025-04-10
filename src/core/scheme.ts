@@ -2,7 +2,7 @@ import type { Color, CoreSchemeOptions, SchemeOptions } from '../types';
 import { DynamicScheme, TonalPalette } from '@material/material-color-utilities';
 import { createPalette } from './palette.ts';
 import { ContrastLevel, mapVariantToScheme, Variant } from './config';
-import { convertToArgb, convertToHct } from './conversion.ts';
+import { toArgb, toHct } from './conversion.ts';
 
 /**
  * Generates a dynamic scheme based on provided configuration options.
@@ -45,14 +45,10 @@ export function createScheme(
     variant = Variant.TONAL_SPOT,
   } = options;
 
-  const sourceColorArgb = convertToArgb(options.sourceColor ?? options.primary ?? 0);
+  const sourceColorArgb = toArgb(options.sourceColor ?? options.primary ?? 0);
 
   const SchemeConstructor = mapVariantToScheme(variant);
-  const scheme = new SchemeConstructor(
-    convertToHct(sourceColorArgb),
-    isDark,
-    contrastLevel,
-  );
+  const scheme = new SchemeConstructor(toHct(sourceColorArgb), isDark, contrastLevel);
 
   if (isSchemeBasedOnSourceColor(options)) {
     return scheme;

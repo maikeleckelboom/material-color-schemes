@@ -1,6 +1,6 @@
 import { Contrast, Hct } from '@material/material-color-utilities';
 import type { Color } from '../types';
-import { convertToArgb } from './conversion.ts';
+import { toArgb } from './conversion.ts';
 
 /**
  * Get a contrasting tone based on a base tone and a contrast ratio.
@@ -40,7 +40,7 @@ function getBestContrastingTone(tone: number, ratio: number = 7.0): number {
  * @returns The contrast ratio between the two colors.
  */
 export function getContrastRatio(color1: Color, color2: Color): number {
-  return Contrast.ratioOfTones(convertToArgb(color1), convertToArgb(color2));
+  return Contrast.ratioOfTones(toArgb(color1), toArgb(color2));
 }
 
 /**
@@ -48,7 +48,7 @@ export function getContrastRatio(color1: Color, color2: Color): number {
  *
  */
 export function getContrastColor(color: Color): number {
-  const argb = convertToArgb(color);
+  const argb = toArgb(color);
   const { hue, chroma, tone } = Hct.fromInt(argb);
   const contrastTone = getBestContrastingTone(tone);
   return Hct.from(hue, chroma, contrastTone).toInt();

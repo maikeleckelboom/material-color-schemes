@@ -13,21 +13,25 @@ export { createScheme } from './scheme';
 export { createTheme } from './theme';
 export {
   createColorScheme,
-  deriveColorsFromScheme,
-  deriveCustomColorsFromTheme,
-  derivePaletteColorsFromTheme,
+  createColorsFromScheme,
+  createCustomColorsFromTheme,
+  createPaletteFromTheme,
   mapPaletteToTonalKeys,
 } from './color-scheme.ts';
 
 // conversion.ts – For color-space transformations
 export {
-  convertToArgb,
-  convertToHex,
-  convertToRgba,
-  convertToHct,
-  convertToLab,
-  convertToXyz,
-  convertToLstar,
+  toArgb,
+  toHex,
+  toRgba,
+  toHct,
+  toLab,
+  toXyz,
+  toLstar,
+  toAlpha,
+  toRed,
+  toGreen,
+  toBlue,
 } from './conversion.ts';
 
 // formatting.ts – For string/UI representations
@@ -39,11 +43,7 @@ export {
 } from './formatting.ts';
 
 // css-vars.ts - For CSS variable generation
-export {
-  buildCssVarMapping,
-  stringifyCssVarMapping,
-  createCssVariables,
-} from './css-vars.ts';
+export { createCssVarMap, serializeCssVarMap, createCssVariables } from './css-vars.ts';
 
 export { harmonize, blendHue, blendCam } from './blend.ts';
 export { createCustomColor } from './color.ts';
@@ -54,13 +54,13 @@ export {
   createPalette,
   createAnalogousPalettes,
   createComplementaryPalette,
-  extractPaletteColors,
+  getPaletteColors,
   isColorInPalette,
 } from './palette.ts';
 
 // Contrast and accessibility
 export { getContrastRatio, getContrastColor, isContrasting } from './contrast.ts';
-export { isDisliked, fixIfDisliked } from './dislike.ts';
+export { isDisliked, fixDislikedColor } from './dislike.ts';
 
 // Analysis and recommendations
-export { calculateColorScore, type ScoreOptions } from './scoring.ts';
+export { createColorScore, type ScoreOptions } from './scoring.ts';
