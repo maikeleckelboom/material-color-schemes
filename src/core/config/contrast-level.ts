@@ -24,10 +24,14 @@ const CONTRAST_LEVELS = Object.entries(ContrastLevel)
   }))
   .sort((a, b) => a.value - b.value);
 
-const REDUCED_LEVEL = CONTRAST_LEVELS.find((level) => level.value === ContrastLevel.REDUCED)!;
+const REDUCED_LEVEL = CONTRAST_LEVELS.find(
+  (level) => level.value === ContrastLevel.REDUCED,
+)!;
 const NON_NEGATIVE_LEVELS = CONTRAST_LEVELS.filter((level) => level.value >= 0);
 const NON_NEGATIVE_LEVELS_DESC = [...NON_NEGATIVE_LEVELS].reverse();
-const DEFAULT_LEVEL = CONTRAST_LEVELS.find((level) => level.value === ContrastLevel.DEFAULT)!;
+const DEFAULT_LEVEL = CONTRAST_LEVELS.find(
+  (level) => level.value === ContrastLevel.DEFAULT,
+)!;
 
 export function listContrastLevels(): ConfigOption[] {
   return CONTRAST_LEVELS;

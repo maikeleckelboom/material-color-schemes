@@ -9,5 +9,5 @@ export const DEFAULT_SCORE_OPTIONS: ScoreOptions = {
 };
 
 export const DEFAULT_PALETTE_TONES: readonly number[] = [
-  0, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99, 100,
+  5, 10, 20, 30, 40, 50, 60, 70, 80, 90, 95, 99,
 ] as const;

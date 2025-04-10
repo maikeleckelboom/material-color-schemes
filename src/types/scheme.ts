@@ -1,7 +1,7 @@
 import type { Variant } from '../core/config';
 import type { Color } from './color-scheme.ts';
 
-export interface DefaultSchemeOptions {
+export interface CoreSchemeOptions {
   primary?: Color;
   secondary?: Color;
   tertiary?: Color;
@@ -13,5 +13,5 @@ export interface DefaultSchemeOptions {
 }
 
 export type SchemeOptions =
-  | (DefaultSchemeOptions & { primary: Color; sourceColor?: Color })
-  | (DefaultSchemeOptions & { sourceColor: Color; primary?: Color });
+  | (CoreSchemeOptions & { primary: Color; sourceColor?: Color })
+  | (CoreSchemeOptions & { sourceColor: Color; primary?: Color });

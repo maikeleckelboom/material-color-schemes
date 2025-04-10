@@ -1,10 +1,8 @@
-import type { Color } from '../types';
+import type { Color, CoreSchemeOptions, SchemeOptions } from '../types';
 import { DynamicScheme, TonalPalette } from '@material/material-color-utilities';
 import { createPalette } from './palette.ts';
-import type { DefaultSchemeOptions, SchemeOptions } from '../types';
-import { mapVariantToScheme, Variant } from './config';
+import { ContrastLevel, mapVariantToScheme, Variant } from './config';
 import { convertToArgb, convertToHct } from './conversion.ts';
-import { ContrastLevel } from './config';
 
 /**
  * Generates a dynamic scheme based on provided configuration options.
@@ -19,7 +17,7 @@ import { ContrastLevel } from './config';
  *
  * @overload
  * @param {Color} sourceColor - The source color used to generate the scheme.
- * @param {DefaultSchemeOptions} [options] - Additional options to tweak the scheme.
+ * @param {CoreSchemeOptions} [options] - Additional options to tweak the scheme.
  * @returns {DynamicScheme} The dynamic color scheme generated from the source color.
  *
  * @overload
@@ -27,11 +25,14 @@ import { ContrastLevel } from './config';
  *                                  additional colors to override specific palettes.
  * @returns {DynamicScheme} The dynamic color scheme generated according to the given options.
  */
-export function createScheme(sourceColor: Color, options?: DefaultSchemeOptions): DynamicScheme;
+export function createScheme(
+  sourceColor: Color,
+  options?: CoreSchemeOptions,
+): DynamicScheme;
 export function createScheme(options: SchemeOptions): DynamicScheme;
 export function createScheme(
   colorOrOptions: Color | SchemeOptions,
-  maybeOptions?: DefaultSchemeOptions,
+  maybeOptions?: CoreSchemeOptions,
 ): DynamicScheme {
   const options: SchemeOptions =
     typeof colorOrOptions === 'number' || typeof colorOrOptions === 'string'
@@ -39,15 +40,19 @@ export function createScheme(
       : colorOrOptions;
 
   const {
-    contrastLevel = ContrastLevel.DEFAULT,
     isDark = false,
+    contrastLevel = ContrastLevel.DEFAULT,
     variant = Variant.TONAL_SPOT,
   } = options;
 
   const sourceColorArgb = convertToArgb(options.sourceColor ?? options.primary ?? 0);
 
   const SchemeConstructor = mapVariantToScheme(variant);
-  const scheme = new SchemeConstructor(convertToHct(sourceColorArgb), isDark, contrastLevel);
+  const scheme = new SchemeConstructor(
+    convertToHct(sourceColorArgb),
+    isDark,
+    contrastLevel,
+  );
 
   if (isSchemeBasedOnSourceColor(options)) {
     return scheme;

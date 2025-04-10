@@ -1,8 +1,7 @@
-import { beforeAll, beforeEach, describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import {
   COLOR_SCHEME_KEYS,
   ContrastLevel,
-  convertToArgb,
   createColorScheme,
   createTheme,
   type Theme,
@@ -10,73 +9,37 @@ import {
   Variant,
 } from '../src';
 
-export const LEMON_CORE_PALETTE_COLORS = {
-  primary: convertToArgb('#FFDE3F'),
-  secondary: convertToArgb('#9B9168'),
-  tertiary: convertToArgb('#6D9B7B'),
-  error: convertToArgb('#FF5449'),
-  neutral: convertToArgb('#949088'),
-  neutralVariant: convertToArgb('#969080'),
-} as const;
-
-export const CORAL_CORE_PALETTE_COLORS = {
-  primary: convertToArgb('#FF6F61'),
-  secondary: convertToArgb('#2F9595'),
-  tertiary: convertToArgb('#FFB347'),
-  error: convertToArgb('#FF5449'),
-  neutral: convertToArgb('#A59D94'),
-  neutralVariant: convertToArgb('#B2A996'),
-} as const;
-
-export const LAVENDER_CORE_PALETTE_COLORS = {
-  primary: convertToArgb('#9A86A8'),
-  secondary: convertToArgb('#7A918D'),
-  tertiary: convertToArgb('#C9918E'),
-  error: convertToArgb('#FF5449'),
-  neutral: convertToArgb('#8C8C8F'),
-  neutralVariant: convertToArgb('#9397A3'),
-} as const;
-
-export const SKY_CORE_PALETTE_COLORS = {
-  primary: convertToArgb('#769CDF'),
-  secondary: convertToArgb('#8991A2'),
-  tertiary: convertToArgb('#A288A6'),
-  error: convertToArgb('#FF5449'),
-  neutral: convertToArgb('#919093'),
-  neutralVariant: convertToArgb('#8E9098'),
-} as const;
-
 const themeOptions: ThemeOptions = {
-  sourceColor: 0xFF769CDF,   // #769CDF
-  primary: 0xFF769CDF,   // #769CDF
-  secondary: 0xFF8991A2, // #8991A2
-  tertiary: 0xFFA288A6,  // #A288A6
-  neutral: 0xFF919093,   // #919093
-  neutralVariant: 0xFF8E9098, // #8E9098
+  sourceColor: 0xff769cdf,
+  primary: 0xff769cdf,
+  secondary: 0xff8991a2,
+  tertiary: 0xffa288a6,
+  neutral: 0xff919093,
+  neutralVariant: 0xff8e9098,
   contrastLevel: ContrastLevel.DEFAULT,
   variant: Variant.TONAL_SPOT,
   staticColors: [
     {
       name: 'Electric Leaf',
-      value: 0xFF32CD32, // #32CD32
+      value: 0xff32cd32,
     },
     {
       name: 'Blueberry Blue',
-      value: 0xFF4F66B0, // #4F66B0
+      value: 0xff4f66b0,
     },
   ],
 };
 
 let theme: Theme;
 
-beforeEach(() => {
+beforeAll(() => {
   theme = createTheme(themeOptions);
 });
 
 describe('createColorScheme', () => {
   describe('Core Functionality', () => {
     it('generates a complete scheme with all M3 color keys', () => {
-      const colorScheme = createColorScheme(theme, { brightnessVariants: true });
+      const colorScheme = createColorScheme(theme);
 
       COLOR_SCHEME_KEYS.forEach((key) => {
         expect(colorScheme).toHaveProperty(key);
@@ -117,6 +80,7 @@ describe('createColorScheme', () => {
       });
 
       expect(colorScheme.background).toBe(4278190080);
+      expect(colorScheme.surface).toBe(4278190080);
     });
   });
 
@@ -141,6 +105,20 @@ describe('createColorScheme', () => {
       expect(colorScheme).toHaveProperty('electricLeaf');
       expect(colorScheme).not.toHaveProperty('electricLeafLight');
       expect(colorScheme).not.toHaveProperty('blueberryBlueDark');
+    });
+  });
+
+  describe('Palette Tones', () => {
+    it('should generate palettes for primary, secondary, and tertiary colors', () => {
+      const paletteTones = [0, 25, 50, 75, 100];
+      const colorScheme = createColorScheme(theme, { paletteTones });
+      for (const tone of paletteTones) {
+        expect(colorScheme).toHaveProperty(`primary${tone}`);
+        expect(colorScheme).toHaveProperty(`secondary${tone}`);
+        expect(colorScheme).toHaveProperty(`tertiary${tone}`);
+        expect(colorScheme).toHaveProperty(`neutral${tone}`);
+        expect(colorScheme).toHaveProperty(`neutralVariant${tone}`);
+      }
     });
   });
 });

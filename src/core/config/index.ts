@@ -6,4 +6,8 @@ export type ConfigOption = {
 };
 
 export { Variant, listVariants, mapVariantToScheme } from './variant';
-export { ContrastLevel, listContrastLevels, getClosestContrastLevel } from './contrast-level';
+export {
+  ContrastLevel,
+  listContrastLevels,
+  getClosestContrastLevel,
+} from './contrast-level';

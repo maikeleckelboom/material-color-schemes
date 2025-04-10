@@ -1,5 +1,5 @@
 {
-  "name": "material-color-schemes",
+  "name": "material-schemes",
   "module": "src/index.ts",
   "type": "module",
   "devDependencies": {

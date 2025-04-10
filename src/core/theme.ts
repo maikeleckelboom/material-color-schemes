@@ -26,7 +26,10 @@ import { convertToArgb } from './conversion.ts';
  * @param sourceColor
  * @param options
  */
-export function createTheme(sourceColor: Color, options?: Omit<ThemeOptions, 'sourceColor'>): Theme;
+export function createTheme(
+  sourceColor: Color,
+  options?: Omit<ThemeOptions, 'sourceColor'>,
+): Theme;
 export function createTheme(options: ThemeOptions): Theme;
 export function createTheme(
   colorOrOptions: Color | ThemeOptions,

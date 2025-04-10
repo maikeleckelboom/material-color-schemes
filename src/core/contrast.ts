@@ -10,7 +10,11 @@ import { convertToArgb } from './conversion.ts';
  * @param preferLighter - Whether to prefer a lighter or darker tone. Default is true (lighter).
  * @returns The contrasting tone.
  */
-function getContrastingTone(baseTone: number, ratio: number, preferLighter: boolean): number {
+function getContrastingTone(
+  baseTone: number,
+  ratio: number,
+  preferLighter: boolean,
+): number {
   if (preferLighter) return Contrast.lighter(baseTone, ratio);
   else return Contrast.darker(baseTone, ratio);
 }
@@ -35,7 +39,7 @@ function getBestContrastingTone(tone: number, ratio: number = 7.0): number {
  * @param color2 - The second color.
  * @returns The contrast ratio between the two colors.
  */
-export function getContrastRatioOfTones(color1: Color, color2: Color): number {
+export function getContrastRatio(color1: Color, color2: Color): number {
   return Contrast.ratioOfTones(convertToArgb(color1), convertToArgb(color2));
 }
 
@@ -57,6 +61,10 @@ export function getContrastColor(color: Color): number {
  * @param color2 - The second color.
  * @param minRatio - The minimum contrast ratio to check against. Default is 4.5.
  */
-export function isContrasting(color1: Color, color2: Color, minRatio: number = 4.5): boolean {
-  return getContrastRatioOfTones(color1, color2) >= minRatio;
+export function isContrasting(
+  color1: Color,
+  color2: Color,
+  minRatio: number = 4.5,
+): boolean {
+  return getContrastRatio(color1, color2) >= minRatio;
 }

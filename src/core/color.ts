@@ -13,7 +13,10 @@ import type { Color, StaticColor } from '../types';
  * @param staticColor The custom color to use in the custom color group.
  * @returns The custom color group, or null if the static color is invalid.
  */
-export function createCustomColor(sourceColor: Color, staticColor: StaticColor): CustomColorGroup {
+export function createCustomColor(
+  sourceColor: Color,
+  staticColor: StaticColor,
+): CustomColorGroup {
   const { name, blend = false } = staticColor;
   const source = convertToArgb(sourceColor);
   const value = convertToArgb(staticColor.value);

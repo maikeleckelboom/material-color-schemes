@@ -14,22 +14,6 @@ export function createPalette(color: Color): TonalPalette {
 }
 
 /**
- * Creates a mapping of tone values to their corresponding color values.
- * @param colorOrPalette - A Color or TonalPalette instance.
- * @param paletteTones - An array of tone values.
- * @returns An object mapping tone values to color values.
- */
-export function buildPaletteTonesMapping(
-  colorOrPalette: Color | TonalPalette,
-  paletteTones: number[],
-): Record<number, number> {
-  if (!(colorOrPalette instanceof TonalPalette)) {
-    colorOrPalette = createPalette(colorOrPalette);
-  }
-  return extractPaletteColors(colorOrPalette, paletteTones);
-}
-
-/**
  * Extracts color values for specified tones from a TonalPalette.
  * @param palette - A TonalPalette instance.
  * @param tones - An array of tone values.
@@ -37,23 +21,43 @@ export function buildPaletteTonesMapping(
  */
 export function extractPaletteColors(
   palette: TonalPalette,
-  tones: number[],
+  tones: number[] = [...DEFAULT_PALETTE_TONES],
 ): Record<number, number> {
   return Object.fromEntries(tones.map((tone) => [tone, palette.tone(tone)]));
 }
 
-function isColorInPalette(palette: TonalPalette, color: Color): boolean {
+/**
+ * Checks if a color is part of a given palette.
+ * @param palette - A TonalPalette instance.
+ * @param color - A Color value.
+ * @returns True if the color is in the palette, false otherwise.
+ */
+export function isColorInPalette(palette: TonalPalette, color: Color): boolean {
   const hct = convertToHct(color);
   return hct.hue === palette.hue && hct.chroma === palette.chroma;
 }
 
-function createComplementaryPalette(palette: TonalPalette): TonalPalette {
+/**
+ * Creates a complementary palette based on the provided TonalPalette.
+ * @param palette - A TonalPalette instance.
+ * @returns A new TonalPalette instance with complementary colors.
+ */
+export function createComplementaryPalette(palette: TonalPalette): TonalPalette {
   const newHue = (palette.hue + 180) % 360;
   return TonalPalette.fromHueAndChroma(newHue, palette.chroma);
 }
 
-function createAnalogousPalettes(palette: TonalPalette, offset = 30): TonalPalette[] {
-  return [offset, -offset].map(offset =>
+/**
+ * Creates analogous palettes based on the provided TonalPalette.
+ * @param palette - A TonalPalette instance.
+ * @param offset - The hue offset for creating analogous colors.
+ * @returns An array of TonalPalette instances with analogous colors.
+ */
+export function createAnalogousPalettes(
+  palette: TonalPalette,
+  offset = 30,
+): TonalPalette[] {
+  return [offset, -offset].map((offset) =>
     TonalPalette.fromHueAndChroma((palette.hue + offset + 360) % 360, palette.chroma),
   );
 }

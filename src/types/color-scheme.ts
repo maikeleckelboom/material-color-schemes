@@ -30,9 +30,7 @@ export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number];
  * @description Maps M3 color roles to their actual color values. While extensible via string index,
  * custom properties should follow M3 naming conventions.
  */
-export interface ColorScheme extends Record<ColorKey | string, number> {
-
-}
+export interface ColorScheme extends Record<ColorKey | string, number> {}
 
 /**
  * Color scheme representing a collection of custom colors
@@ -40,7 +38,7 @@ export interface ColorScheme extends Record<ColorKey | string, number> {
  * @type {CustomColorScheme<T>} CustomColorScheme allows for additional properties
  * @description This type is used for custom color schemes that may not strictly adhere to M3 naming conventions.
  */
-export type CustomColorScheme<T extends Record<string, string | number>> = T & {
+export type CustomColorScheme<T = Record<string, string | number>> = T & {
   [key: string]: number;
 };
 
@@ -102,10 +100,12 @@ export interface ColorSchemeOptions<V extends boolean = false> {
    */
   brightnessVariants?: V;
   /**
-   * Whether to generate and include tonal palette colors in the color scheme.
+   * Specifies which tonal palette tones to generate and include in the color scheme.
+   * Set to `false` to disable tonal palette generation.
+   * If an array is provided, it should contain the tones to be generated.
    * @default false
    */
-  paletteTones?: boolean | string[];
+  paletteTones?: false | number[];
   /**
    * Type-safe color scheme modifier that preserves existing properties
    * while allowing new property additions

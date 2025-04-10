@@ -1,4 +1,4 @@
-import type { Color } from '../types';
+import type { Color, ColorScheme } from '../types';
 import { convertToHex } from './conversion.ts';
 import { formatCssVarName } from './formatting.ts';
 
@@ -23,12 +23,11 @@ export function buildCssVarMapping<T extends Record<string, Color>>(
   );
 }
 
-
 /**
  * Converts a mapping of CSS variables to a CSS string.
  *
  * @param mapping - A record of CSS variable names to values
- * @param cssSelector - Optional selector to wrap the vars in
+ * @param selector - Optional selector to wrap the vars in
  * @returns A CSS string (with or without selector)
  *
  * @example
@@ -39,9 +38,24 @@ export function buildCssVarMapping<T extends Record<string, Color>>(
  * stringifyCssVarMapping({ '--primary': '#ff0000' }, ':root')
  * // → ":root { --primary: #ff0000; }"
  */
-export function stringifyCssVarMapping(mapping: Record<string, string>, cssSelector?: string): string {
+export function stringifyCssVarMapping(
+  mapping: Record<string, string>,
+  selector?: string,
+): string {
   const cssVars = Object.entries(mapping)
     .map(([name, value]) => `${name}: ${value};`)
     .join(' ');
-  return cssSelector ? `${cssSelector} { ${cssVars} }` : cssVars;
+  return selector ? `${selector} { ${cssVars} }` : cssVars;
+}
+
+/**
+ * Generates a CSS string defining CSS variables based on the provided color scheme.
+ *
+ * @param colorScheme - An object representing the color scheme.
+ * @param selector - The CSS selector to which the variables should be applied (default is ':root').
+ * @returns A string containing the CSS variable definitions.
+ */
+export function createCssVariables(colorScheme: ColorScheme, selector?: string): string {
+  const cssVarMapping = buildCssVarMapping(colorScheme);
+  return stringifyCssVarMapping(cssVarMapping, selector);
 }

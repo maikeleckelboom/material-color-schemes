@@ -53,4 +53,3 @@ export function convertToXyz(color: Color): number[] {
   const argbColor = convertToArgb(color);
   return xyzFromArgb(argbColor);
 }
-
