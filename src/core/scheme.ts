@@ -1,6 +1,6 @@
 import type { Color } from '../types';
 import { DynamicScheme, TonalPalette } from '@material/material-color-utilities';
-import { createTonalPalette } from './palette.ts';
+import { createPalette } from './palette.ts';
 import type { DefaultSchemeOptions, SchemeOptions } from '../types';
 import { mapVariantToScheme, Variant } from './config/variant.ts';
 import { convertToArgb, convertToHct } from './conversion.ts';
@@ -67,17 +67,17 @@ export function createScheme(
     isDark,
     contrastLevel,
     variant,
-    primaryPalette: createPalette(options.primary || options.sourceColor, core.a1),
-    secondaryPalette: createPalette(options.secondary, core.a2),
-    tertiaryPalette: createPalette(options.tertiary, core.a3),
-    neutralPalette: createPalette(options.neutral, core.n1),
-    neutralVariantPalette: createPalette(options.neutralVariant, core.n2),
+    primaryPalette: createTonalPalette(options.primary || options.sourceColor, core.a1),
+    secondaryPalette: createTonalPalette(options.secondary, core.a2),
+    tertiaryPalette: createTonalPalette(options.tertiary, core.a3),
+    neutralPalette: createTonalPalette(options.neutral, core.n1),
+    neutralVariantPalette: createTonalPalette(options.neutralVariant, core.n2),
   });
 }
 
-function createPalette(color: Color | undefined, fallback: TonalPalette) {
+function createTonalPalette(color: Color | undefined, fallback: TonalPalette) {
   if (!color) return fallback;
-  return createTonalPalette(color);
+  return createPalette(color);
 }
 
 function isSchemeBasedOnSeedColor(options: SchemeOptions): boolean {

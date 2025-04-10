@@ -31,7 +31,7 @@ export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number];
  * custom properties should follow M3 naming conventions.
  */
 export interface ColorScheme extends Record<ColorKey | string, number> {
-  [key: string]: number;
+
 }
 
 /**
@@ -57,20 +57,20 @@ type SuffixedColorScheme<Suffix extends string> = {
 
 /**
  * Light mode variant color scheme with '-Light' suffix appended to keys
- * @type {SuffixedColorScheme<'Light'>} ColorSchemeLight
+ * @type {SuffixedColorScheme<'Light'>} LightColorScheme
  */
-export type ColorSchemeLight = SuffixedColorScheme<'Light'>;
+export type LightColorScheme = SuffixedColorScheme<'Light'>;
 
 /**
  * Dark mode variant color scheme with '-Dark' suffix appended to keys
- * @type {SuffixedColorScheme<'Dark'>} ColorSchemeDark
+ * @type {SuffixedColorScheme<'Dark'>} DarkColorScheme
  */
-export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
+export type DarkColorScheme = SuffixedColorScheme<'Dark'>;
 
 /**
  * Return type for color scheme generation based on options
  * @template BV - Boolean type for brightness variants flag
- * @type {ColorScheme | (ColorScheme & ColorSchemeLight & ColorSchemeDark)} ColorSchemeReturnType
+ * @type {ColorScheme | (ColorScheme & LightColorScheme & DarkColorScheme)} ColorSchemeReturnType
  * @description When brightnessVariants=true, combines base scheme with light/dark variants
  * @example
  * // With variants:
@@ -78,8 +78,8 @@ export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
  * // Without variants:
  * type BaseScheme = ColorSchemeReturnType; // Only contains base keys
  */
-export type ColorSchemeReturnType<BV extends boolean> = BV extends true
-  ? ColorScheme & ColorSchemeLight & ColorSchemeDark
+export type ColorSchemeReturnType<V extends boolean> = V extends true
+  ? ColorScheme & LightColorScheme & DarkColorScheme
   : ColorScheme;
 
 /**

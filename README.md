@@ -1,6 +1,6 @@
-# Material Theme Tools
+# Material Color Schemes
 
-**Material Theme Tools** is a set of tools built to simplify and enhance working with color—especially when creating
+**Material Color Schemes** is a set of tools built to simplify and enhance working with color—especially when creating
 themes and schemes inspired by Material Design. Designed to work alongside [
 `@material/material-color-utilities`](https://www.npmjs.com/package/@material/material-color-utilities), it offers an
 extra layer of flexibility and ease.
@@ -26,14 +26,27 @@ in design systems.
 
 ## 📦 Installation
 
+The `material-color-schemes` package depends on [
+`@material/material-color-utilities`](https://www.npmjs.com/package/@material/material-color-utilities) as a peer
+dependency. This means if you already have `@material/material-color-utilities` installed in your project, you can
+simply install `material-color-schemes` by itself. Otherwise, you should install both packages together.
+
+### Option 1: If you do **not** already have `@material/material-color-utilities`
+
 ```bash
-npm install @material/material-color-utilities material-theme-tools
+npm install @material/material-color-utilities material-color-schemes
 ```
+
+### Option 2: If you **already** have `@material/material-color-utilities`
+
+```bash
+npm install material-color-schemes
+````
 
 ## 🚀 Quick Start
 
 ```ts
-import { createTheme, Variant, ContrastLevel } from 'material-theme-tools';
+import { createTheme, Variant, ContrastLevel } from 'material-color-schemes';
 
 const theme = createTheme('#6200EE', {
   primary: '#3700B3',

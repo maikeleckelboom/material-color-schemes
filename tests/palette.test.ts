@@ -1,18 +1,21 @@
 import { describe, expect, it } from 'vitest';
 import { TonalPalette } from '@material/material-color-utilities';
-import { createTonalPalette, DEFAULT_PALETTE_TONES, mapPaletteTones } from '../src';
+import { createPalette, DEFAULT_PALETTE_TONES, mapPaletteTones } from '../src';
 
 describe('Tonal Palette Creation', () => {
-  describe('createTonalPalette', () => {
-    it('creates a TonalPalette from valid color inputs (hex/ARGB)', () => {
-      const hexPalette = createTonalPalette('#40A127');
-      const argbPalette = createTonalPalette(0xFF40A127);
+  describe('createPalette', () => {
+    const hexPalette = createPalette('#40A127');
+    const argbPalette = createPalette(0xFF40A127);
 
+    it('creates a TonalPalette from valid color inputs (hex/ARGB)', () => {
       expect(hexPalette).toBeInstanceOf(TonalPalette);
       expect(argbPalette).toBeInstanceOf(TonalPalette);
-      // Verify both inputs produce equivalent palettes
-      expect(hexPalette.tone(40)).toEqual(argbPalette.tone(40));
     });
+
+
+    it('produces equivalent palettes for hex and ARGB inputs', () => {
+      expect(hexPalette.tone(40)).toEqual(argbPalette.tone(40));
+    })
   });
 
   describe('mapPaletteTones', () => {
@@ -21,7 +24,7 @@ describe('Tonal Palette Creation', () => {
 
     it('generates tone maps for default and custom tones with order preservation', () => {
       // Default tones
-      const defaultMap = mapPaletteTones(testColor);
+      const defaultMap = mapPaletteTones(testColor, [...DEFAULT_PALETTE_TONES]);
       expect(Object.keys(defaultMap)).toEqual(DEFAULT_PALETTE_TONES.map(String));
 
       // Custom tones with edge cases
@@ -30,7 +33,7 @@ describe('Tonal Palette Creation', () => {
     });
 
     it('uses palette.tone() for each specified tone', () => {
-      const palette = createTonalPalette(testColor);
+      const palette = createPalette(testColor);
       const tones = [20, 40, 60];
       const toneMap = mapPaletteTones(palette, tones);
 
