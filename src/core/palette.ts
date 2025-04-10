@@ -19,9 +19,9 @@ export function createPalette(color: Color): TonalPalette {
  * @param paletteTones - An array of tone values.
  * @returns An object mapping tone values to color values.
  */
-export function mapPaletteTones(
+export function buildPaletteTonesMapping(
   colorOrPalette: Color | TonalPalette,
-  paletteTones: number[] = [...DEFAULT_PALETTE_TONES],
+  paletteTones: number[],
 ): Record<number, number> {
   if (!(colorOrPalette instanceof TonalPalette)) {
     colorOrPalette = createPalette(colorOrPalette);
@@ -40,12 +40,6 @@ export function extractPaletteColors(
   tones: number[],
 ): Record<number, number> {
   return Object.fromEntries(tones.map((tone) => [tone, palette.tone(tone)]));
-}
-
-function getClosestTone(targetTone: number, paletteTones: number[] = [...DEFAULT_PALETTE_TONES]): number {
-  return paletteTones.reduce((prev, curr) =>
-    Math.abs(curr - targetTone) < Math.abs(prev - targetTone) ? curr : prev,
-  );
 }
 
 function isColorInPalette(palette: TonalPalette, color: Color): boolean {

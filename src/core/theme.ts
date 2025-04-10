@@ -7,11 +7,11 @@ import { TonalPalette } from '@material/material-color-utilities';
 import { convertToArgb } from './conversion.ts';
 
 /**
- * Creates a Material Design theme from a seed color or theme options.
+ * Creates a Material Design theme from a source color or theme options.
  * Generates both light and dark scheme variants, color palettes, and handles custom colors.
  *
  * @example
- * // Using seed color with options
+ * // Using source color with options
  * createTheme(0xff0000, { contrastLevel: ContrastLevel.HIGH });
  *
  * @example
@@ -23,10 +23,10 @@ import { convertToArgb } from './conversion.ts';
  * });
  *
  * @returns {Theme} Complete theme object with light/dark schemes and palettes
- * @param seedColor
+ * @param sourceColor
  * @param options
  */
-export function createTheme(seedColor: Color, options?: Omit<ThemeOptions, 'sourceColor'>): Theme;
+export function createTheme(sourceColor: Color, options?: Omit<ThemeOptions, 'sourceColor'>): Theme;
 export function createTheme(options: ThemeOptions): Theme;
 export function createTheme(
   colorOrOptions: Color | ThemeOptions,

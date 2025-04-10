@@ -1,29 +1,30 @@
 import {
-  Hct,
   argbFromHex,
+  Hct,
   hexFromArgb,
   labFromArgb,
   lstarFromArgb,
-  rgbaFromArgb,
   type Rgba,
+  rgbaFromArgb,
+  xyzFromArgb,
 } from '@material/material-color-utilities';
 import type { Color } from '../types';
 
 /** Convert color to ARGB format */
 export function convertToArgb(color: Color) {
-  if (typeof color === 'string') {
-    return argbFromHex(color);
+  if (typeof color === 'number') {
+    return color;
   }
-  return color;
+  return argbFromHex(color);
 }
 
 /** Convert ARGB or HEX color to RGB format */
-export function convertToRgb(color: Color): Rgba {
+export function convertToRgba(color: Color): Rgba {
   const argbColor = convertToArgb(color);
   return rgbaFromArgb(argbColor);
 }
 
-/** Convert ARGB or HEX color to hex format */
+/** Convert ARGB color to HEX format */
 export function convertToHex(color: Color): string {
   const argbColor = convertToArgb(color);
   return hexFromArgb(argbColor);
@@ -46,3 +47,10 @@ export function convertToLstar(color: Color): number {
   const argbColor = convertToArgb(color);
   return lstarFromArgb(argbColor);
 }
+
+/** Convert ARGB or HEX color to XYZ format */
+export function convertToXyz(color: Color): number[] {
+  const argbColor = convertToArgb(color);
+  return xyzFromArgb(argbColor);
+}
+

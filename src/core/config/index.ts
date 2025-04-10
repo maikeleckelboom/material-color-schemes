@@ -5,5 +5,5 @@ export type ConfigOption = {
   value: number;
 };
 
-export { Variant, listVariants } from './variant';
+export { Variant, listVariants, mapVariantToScheme } from './variant';
 export { ContrastLevel, listContrastLevels, getClosestContrastLevel } from './contrast-level';

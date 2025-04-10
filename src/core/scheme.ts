@@ -2,7 +2,7 @@ import type { Color } from '../types';
 import { DynamicScheme, TonalPalette } from '@material/material-color-utilities';
 import { createPalette } from './palette.ts';
 import type { DefaultSchemeOptions, SchemeOptions } from '../types';
-import { mapVariantToScheme, Variant } from './config/variant.ts';
+import { mapVariantToScheme, Variant } from './config';
 import { convertToArgb, convertToHct } from './conversion.ts';
 import { ContrastLevel } from './config';
 
@@ -10,20 +10,20 @@ import { ContrastLevel } from './config';
  * Generates a dynamic scheme based on provided configuration options.
  *
  * This function supports two overloads:
- * 1. Provide a seed color with optional default options.
+ * 1. Provide a source color with optional default options.
  * 2. Provide a comprehensive options object that may include multiple color overrides.
  *
- * When only a seed (or primary) color is provided and no additional color options
+ * When only a source (or primary) color is provided and no additional color options
  * (e.g. secondary, tertiary) are specified, the generated scheme will base all palettes
  * on that single source in combination with the default tonal palette.
  *
  * @overload
- * @param {Color} sourceColor - The seed color used to generate the scheme.
+ * @param {Color} sourceColor - The source color used to generate the scheme.
  * @param {DefaultSchemeOptions} [options] - Additional options to tweak the scheme.
- * @returns {DynamicScheme} The dynamic color scheme generated from the seed color.
+ * @returns {DynamicScheme} The dynamic color scheme generated from the source color.
  *
  * @overload
- * @param {SchemeOptions} options - A comprehensive options object including the seed color and optionally
+ * @param {SchemeOptions} options - A comprehensive options object including the source color and optionally
  *                                  additional colors to override specific palettes.
  * @returns {DynamicScheme} The dynamic color scheme generated according to the given options.
  */
@@ -44,12 +44,12 @@ export function createScheme(
     variant = Variant.TONAL_SPOT,
   } = options;
 
-  const sourceColorArgb = convertToArgb(options.sourceColor || options.primary || 0);
+  const sourceColorArgb = convertToArgb(options.sourceColor ?? options.primary ?? 0);
 
   const SchemeConstructor = mapVariantToScheme(variant);
   const scheme = new SchemeConstructor(convertToHct(sourceColorArgb), isDark, contrastLevel);
 
-  if (isSchemeBasedOnSeedColor(options)) {
+  if (isSchemeBasedOnSourceColor(options)) {
     return scheme;
   }
 
@@ -80,7 +80,7 @@ function createTonalPalette(color: Color | undefined, fallback: TonalPalette) {
   return createPalette(color);
 }
 
-function isSchemeBasedOnSeedColor(options: SchemeOptions): boolean {
+function isSchemeBasedOnSourceColor(options: SchemeOptions): boolean {
   const hasColorSource = !!options.sourceColor || !!options.primary;
   return (
     hasColorSource &&

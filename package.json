@@ -1,5 +1,5 @@
 {
-  "name": "material-schemes",
+  "name": "material-color-schemes",
   "module": "src/index.ts",
   "type": "module",
   "devDependencies": {
@@ -18,7 +18,7 @@
     "kebab-case": "^2.0.1"
   },
   "scripts": {
-    "test:browser": "vitest",
+    "test:browser": "vitest --browser",
     "dev": "vitest --watch",
     "format": "prettier --write ."
   }

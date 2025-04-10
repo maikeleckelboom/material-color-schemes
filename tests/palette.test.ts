@@ -1,64 +1,70 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
 import { TonalPalette } from '@material/material-color-utilities';
-import { createPalette, DEFAULT_PALETTE_TONES, mapPaletteTones } from '../src';
+import { buildPaletteTonesMapping, createPalette, DEFAULT_PALETTE_TONES } from '../src';
 
 describe('Tonal Palette Creation', () => {
   describe('createPalette', () => {
-    const hexPalette = createPalette('#40A127');
-    const argbPalette = createPalette(0xFF40A127);
+    let hexPalette: TonalPalette;
+    let argbPalette: TonalPalette;
 
-    it('creates a TonalPalette from valid color inputs (hex/ARGB)', () => {
+    beforeAll(() => {
+      hexPalette = createPalette('#40A127');
+      argbPalette = createPalette(0xFF40A127);
+    });
+
+    it('should create TonalPalette instances from both hex and ARGB inputs', () => {
       expect(hexPalette).toBeInstanceOf(TonalPalette);
       expect(argbPalette).toBeInstanceOf(TonalPalette);
     });
 
-
-    it('produces equivalent palettes for hex and ARGB inputs', () => {
-      expect(hexPalette.tone(40)).toEqual(argbPalette.tone(40));
-    })
+    it('should produce equivalent tone values for hex and ARGB inputs', () => {
+      const tone = 40;
+      expect(hexPalette.tone(tone)).toEqual(argbPalette.tone(tone));
+    });
   });
 
-  describe('mapPaletteTones', () => {
-    const testColor = '#40A127';
-    const testTones = [0, 50, 100];
+  describe('buildPaletteTonesMapping', () => {
+    const testColor: string = '#40A127';
+    const defaultTones: number[] = [...DEFAULT_PALETTE_TONES];
+    const customTones: number[] = [0, 50, 100];
+    let palette: TonalPalette;
 
-    it('generates tone maps for default and custom tones with order preservation', () => {
-      // Default tones
-      const defaultMap = mapPaletteTones(testColor, [...DEFAULT_PALETTE_TONES]);
-      expect(Object.keys(defaultMap)).toEqual(DEFAULT_PALETTE_TONES.map(String));
-
-      // Custom tones with edge cases
-      const customMap = mapPaletteTones(testColor, testTones);
-      expect(Object.keys(customMap)).toEqual(testTones.map(String));
+    beforeAll(() => {
+      palette = createPalette(testColor);
     });
 
-    it('uses palette.tone() for each specified tone', () => {
-      const palette = createPalette(testColor);
-      const tones = [20, 40, 60];
-      const toneMap = mapPaletteTones(palette, tones);
+    it.each([
+      { tones: defaultTones, expectedKeys: DEFAULT_PALETTE_TONES.map(String), description: 'default tones' },
+      { tones: customTones, expectedKeys: customTones.map(String), description: 'custom tones' },
+    ])('generates tone map with preserved order for $description', ({ tones, expectedKeys }) => {
+      const toneMap = buildPaletteTonesMapping(testColor, tones);
+      expect(Object.keys(toneMap)).toEqual(expectedKeys);
+    });
 
-      tones.forEach(tone => {
+    it('should use palette.tone() for each specified tone', () => {
+      const testTones: number[] = [20, 40, 60];
+      const toneMap = buildPaletteTonesMapping(palette, testTones);
+
+      testTones.forEach((tone: number) => {
         expect(toneMap[tone]).toBe(palette.tone(tone));
       });
     });
 
-    it('handles both color formats consistently', () => {
-      const hexMap = mapPaletteTones('#40A127');
-      const argbMap = mapPaletteTones(0xFF40A127);
-
-      expect(hexMap).toEqual(argbMap);
+    it('should produce consistent mappings regardless of input color format', () => {
+      const hexMapping = buildPaletteTonesMapping(testColor, defaultTones);
+      const argbMapping = buildPaletteTonesMapping(0xFF40A127, defaultTones);
+      expect(hexMapping).toEqual(argbMapping);
     });
 
-    it('does not mutate input tones array', () => {
-      const originalTones = [10, 20];
-      const copiedTones = [...originalTones];
-      mapPaletteTones(testColor, originalTones);
-
-      expect(originalTones).toEqual(copiedTones);
+    it('should not mutate the input tones array', () => {
+      const originalTones: number[] = [10, 20];
+      const tonesCopy = [...originalTones];
+      buildPaletteTonesMapping(testColor, originalTones);
+      expect(originalTones).toEqual(tonesCopy);
     });
 
-    it('matches default tones snapshot', () => {
-      expect(mapPaletteTones(testColor)).toMatchSnapshot();
+    it('matches the default tone mapping snapshot', () => {
+      expect(buildPaletteTonesMapping(testColor, defaultTones)).toMatchSnapshot();
     });
   });
 });

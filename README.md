@@ -5,10 +5,10 @@ themes and schemes inspired by Material Design. Designed to work alongside [
 `@material/material-color-utilities`](https://www.npmjs.com/package/@material/material-color-utilities), it offers an
 extra layer of flexibility and ease.
 
-With a focus on practical workflows, Material Color Kit makes it easier to generate cohesive, accessible color systems.
-Core functions like `createScheme`, `createTheme`, and `generateColorScheme` help streamline the creation of
-`DynamicScheme` and `Theme` instances, and transform them into structured color tokens—ideal for use as CSS variables or
-in design systems.
+With a focus on practical workflows, Material Color Schemes makes it easier to generate cohesive, accessible color
+systems. Core functions like `createScheme`, `createTheme`, and `generateColorScheme` help streamline the creation of
+`DynamicScheme` and `Theme` instances, transforming them into structured color tokens—ideal for use as CSS variables or
+design systems.
 
 ## ✨ Features
 
@@ -20,9 +20,16 @@ in design systems.
 - 🤝 **Designed to extend** `@material/material-color-utilities` without getting in the way
 - ♿ **Accessibility-friendly**, with built-in contrast-aware color handling
 
-> ✨ **Supports both HEX and ARGB** formats as input, while maintaining the same return types as the official
-`@material/material-color-utilities`. This makes it easy to integrate with existing workflows and provides more
-> flexibility without changing behavior.
+## ℹ️ Alignment with Official Material Design Package
+
+This library is designed to align as closely as possible with the official Material Design package. However, please
+note that the Material Design team's focus is not on maintaining a TypeScript version of their source code. As a result,
+updates or changes in the official implementation may lead to corresponding updates in this library to ensure continued
+compatibility.
+
+> ✨ **Supports both HEX and ARGB** while providing integration points that are familiar to users of the official
+`@material/material-color-utilities`.
+> This approach eases integration into existing workflows and allows for flexibility in customization.
 
 ## 📦 Installation
 
