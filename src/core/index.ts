@@ -31,7 +31,7 @@ export { createCustomColor } from './color.ts';
 export { quantizeColors } from './quantize.ts';
 
 // Palette generation and management
-export { createTonalPalette, createTonalPaletteColors, getTonalPaletteColors } from './palette.ts';
+export { createTonalPalette, mapPaletteTones, extractPaletteColors } from './palette.ts';
 
 // Contrast and accessibility
 export { getContrastRatioOfTones, getContrastColor, isContrasting } from './contrast.ts';

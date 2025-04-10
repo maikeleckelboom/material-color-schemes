@@ -1,6 +1,6 @@
-# MD Theme Schemes (WIP)
+# Material Theme Tools
 
-**Material Color Kit** is a set of tools built to simplify and enhance working with color—especially when creating
+**Material Theme Tools** is a set of tools built to simplify and enhance working with color—especially when creating
 themes and schemes inspired by Material Design. Designed to work alongside [
 `@material/material-color-utilities`](https://www.npmjs.com/package/@material/material-color-utilities), it offers an
 extra layer of flexibility and ease.
@@ -27,13 +27,13 @@ in design systems.
 ## 📦 Installation
 
 ```bash
-npm install @material/material-color-utilities md-theme-schemes
+npm install @material/material-color-utilities material-theme-tools
 ```
 
 ## 🚀 Quick Start
 
 ```ts
-import { createTheme, Variant, ContrastLevel } from 'md-theme-schemes';
+import { createTheme, Variant, ContrastLevel } from 'material-theme-tools';
 
 const theme = createTheme('#6200EE', {
   primary: '#3700B3',
@@ -45,11 +45,11 @@ const theme = createTheme('#6200EE', {
   contrastLevel: ContrastLevel.DEFAULT,
   staticColors: [
     {
-      name: 'My Custom Color',
+      name: 'My Static Color',
       value: '#FF5733'
     },
     {
-      name: 'My Custom Color 2',
+      name: 'Harmonic Color',
       value: '#AB47BC',
       blend: true
     }
@@ -61,8 +61,7 @@ const colorScheme = generateColorScheme(theme, {
   brightnessVariants: true,
   modifyColorScheme: (colorScheme) => ({
     ...colorScheme,
-    tertiary: '#CE93D8',
-    accent: '#FF5733',
+    accent: colorScheme.primary,
   })
 })
 

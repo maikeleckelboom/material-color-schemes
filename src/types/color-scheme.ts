@@ -21,7 +21,7 @@ export interface StaticColor {
  * @description While technically allowing any string, should primarily use predefined M3 color keys
  * for proper type safety and design system compliance.
  */
-export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number] | (string & {});
+export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number];
 
 /**
  * Interface representing a complete Material Design 3 color scheme
@@ -30,9 +30,17 @@ export type ColorKey = (typeof COLOR_SCHEME_KEYS)[number] | (string & {});
  * @description Maps M3 color roles to their actual color values. While extensible via string index,
  * custom properties should follow M3 naming conventions.
  */
-export interface ColorScheme extends Record<ColorKey, number> {}
+export interface ColorScheme extends Record<ColorKey | string, number> {
+  [key: string]: number;
+}
 
-export type CustomColorScheme<T extends Record<string, number>> = T & {
+/**
+ * Color scheme representing a collection of custom colors
+ * @template T - Generic type extending Record<string, string | number>
+ * @type {CustomColorScheme<T>} CustomColorScheme allows for additional properties
+ * @description This type is used for custom color schemes that may not strictly adhere to M3 naming conventions.
+ */
+export type CustomColorScheme<T extends Record<string, string | number>> = T & {
   [key: string]: number;
 };
 
@@ -61,7 +69,7 @@ export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
 
 /**
  * Return type for color scheme generation based on options
- * @template V - Boolean type for brightness variants flag
+ * @template BV - Boolean type for brightness variants flag
  * @type {ColorScheme | (ColorScheme & ColorSchemeLight & ColorSchemeDark)} ColorSchemeReturnType
  * @description When brightnessVariants=true, combines base scheme with light/dark variants
  * @example
@@ -70,7 +78,7 @@ export type ColorSchemeDark = SuffixedColorScheme<'Dark'>;
  * // Without variants:
  * type BaseScheme = ColorSchemeReturnType; // Only contains base keys
  */
-export type ColorSchemeReturnType<V extends boolean> = V extends true
+export type ColorSchemeReturnType<BV extends boolean> = BV extends true
   ? ColorScheme & ColorSchemeLight & ColorSchemeDark
   : ColorScheme;
 
@@ -93,6 +101,11 @@ export interface ColorSchemeOptions<V extends boolean = false> {
    * @default false
    */
   brightnessVariants?: V;
+  /**
+   * Whether to generate and include tonal palette colors in the color scheme.
+   * @default false
+   */
+  paletteTones?: boolean | string[];
   /**
    * Type-safe color scheme modifier that preserves existing properties
    * while allowing new property additions

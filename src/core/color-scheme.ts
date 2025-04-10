@@ -5,114 +5,167 @@ import { COLOR_SCHEME_KEYS } from '../constants';
 import { formatColorName } from './formatting.ts';
 
 /**
- * Generates a color scheme from a Theme or DynamicScheme object, with support for dark mode,
+ * Generates a color scheme from a Theme or DynamicScheme, supporting dark mode,
  * brightness variants, and custom color modifications.
  *
- * @template V - Boolean type indicating whether brightness variants are included (extends boolean, defaults to false)
- * @param theme
- * @param {ColorSchemeOptions<V>} [options] - Configuration options for the color scheme
- * @param {boolean} [options.dark=false] - Whether to use dark mode variant
- * @param {boolean} [options.brightnessVariants=false] - Whether to include light/dark brightness variants
- * @param {function} [options.modifyColorScheme] - Optional callback to modify the color scheme before returning
- * @returns {ColorSchemeReturnType<V>} A color scheme object containing color values as numbers. When brightnessVariants
- * is true, colors will have 'Light' and 'Dark' suffix variants (e.g., 'primaryLight', 'primaryDark').
+ * @template {boolean} [V=false] Whether brightness variants are included
+ * @param {Theme | DynamicScheme} source Color scheme source data
+ * @param {ColorSchemeOptions<V extends boolean>} [options] Configuration options
+ * @param {boolean} [options.dark=false] Enable dark mode variant
+ * @param {boolean} [options.brightnessVariants=false] Include light/dark variants
+ * @param {function(ColorScheme): ColorScheme} [options.modifyColorScheme] Color scheme modifier
+ * @returns {ColorSchemeReturnType<V extends boolean>} Color scheme with numeric color values
  *
  * @example
  * // Basic usage with default theme
  * const scheme = createColorScheme(theme);
  *
  * @example
- * // With dark mode and brightness variants
+ * // Dark mode with brightness variants
  * const scheme = createColorScheme(theme, { dark: true, brightnessVariants: true });
  *
  * @example
- * // With custom color modification
+ * // Custom color modification
  * const scheme = createColorScheme(theme, {
- *   modifyColorScheme: (colors) => ({ ...colors, customColor: 0xFF0000 })
+ *   modifyColorScheme: colors => ({ ...colors, accent: 0x00FF00 })
  * });
  */
 export function createColorScheme<V extends boolean = false>(
-  theme: Theme,
+  source: Theme,
   options?: ColorSchemeOptions<V>,
 ): ColorSchemeReturnType<V>;
-
-export function createColorScheme(scheme: DynamicScheme, options?: ColorSchemeOptions): ColorScheme;
-
 export function createColorScheme(
-  input: Theme | DynamicScheme,
+  source: DynamicScheme,
   options?: ColorSchemeOptions,
-): ColorSchemeReturnType<typeof options extends { brightnessVariants: true } ? true : false> {
-  if ('schemes' in input) {
-    const theme = input as Theme;
-    const themeOptions = options as ColorSchemeOptions;
-    const { dark = false, brightnessVariants = false, modifyColorScheme } = themeOptions || {};
-    const scheme = dark ? theme.schemes.dark : theme.schemes.light;
-
-    const colors = getColorsFromScheme(scheme);
-    const customColors = getCustomColorsFromTheme(theme, options);
-
-    let colorScheme: ColorScheme = {
-      ...colors,
-      ...customColors,
-    };
-
-    if (brightnessVariants) {
-      const lightColors = getColorsFromScheme(theme.schemes.light, 'light');
-      const darkColors = getColorsFromScheme(theme.schemes.dark, 'dark');
-      colorScheme = {
-        ...colorScheme,
-        ...lightColors,
-        ...darkColors,
-      };
-    }
-
-    const result = modifyColorScheme ? modifyColorScheme(colorScheme) : colorScheme;
-    return result as ColorSchemeReturnType<typeof brightnessVariants>;
-  } else {
-    const scheme = input as DynamicScheme;
-    const schemeOptions = options as { modifyColorScheme?: (cs: ColorScheme) => ColorScheme };
-    let result: ColorScheme = getColorsFromScheme(scheme);
-    if (schemeOptions?.modifyColorScheme) {
-      result = schemeOptions.modifyColorScheme(result);
-    }
-    return result;
-  }
+): ColorScheme;
+export function createColorScheme(
+  source: Theme | DynamicScheme,
+  options?: ColorSchemeOptions,
+): ColorScheme {
+  return isTheme(source)
+    ? createFromTheme(source, options)
+    : createFromScheme(source, options);
 }
 
-function getColorsFromScheme(scheme: DynamicScheme, suffix?: string) {
-  const colors: Record<string, number> = {};
+/** Type guard for Theme detection */
+function isTheme(source: Theme | DynamicScheme): source is Theme {
+  return 'schemes' in source;
+}
+
+/** Handles Theme-based color scheme creation */
+function createFromTheme(theme: Theme, options?: ColorSchemeOptions): ColorScheme {
+  const {
+    dark = false,
+    brightnessVariants = false,
+    modifyColorScheme,
+  } = options || {};
+
+  const baseScheme = dark ? theme.schemes.dark : theme.schemes.light;
+  const colorScheme = mergeColorSources(
+    getColorsFromScheme(baseScheme),
+    getCustomColorsFromTheme(theme, options),
+  );
+
+  const fullScheme = brightnessVariants
+    ? mergeColorSources(
+      colorScheme,
+      getColorsFromScheme(theme.schemes.light, 'light'),
+      getColorsFromScheme(theme.schemes.dark, 'dark'),
+    )
+    : colorScheme;
+
+  return applyColorModifier(fullScheme, modifyColorScheme);
+}
+
+/** Handles DynamicScheme-based color scheme creation */
+function createFromScheme(
+  scheme: DynamicScheme,
+  options?: ColorSchemeOptions,
+): ColorScheme {
+  const baseScheme = getColorsFromScheme(scheme);
+  return applyColorModifier(baseScheme, options?.modifyColorScheme);
+}
+
+/** Applies color modification callback if provided */
+function applyColorModifier(
+  scheme: ColorScheme,
+  modifier?: (colors: ColorScheme) => ColorScheme,
+): ColorScheme {
+  return modifier ? modifier(scheme) : scheme;
+}
+
+/** Merges multiple color sources into single scheme */
+function mergeColorSources(...sources: ColorScheme[]): ColorScheme {
+  return Object.assign({}, ...sources);
+}
+
+/**
+ * Extracts color values from a DynamicScheme with optional suffix
+ * @param scheme Color scheme source
+ * @param suffix Optional suffix to append to color names
+ */
+function getColorsFromScheme(scheme: DynamicScheme, suffix?: string): ColorScheme {
+  const colors: ColorScheme = {};
+
   COLOR_SCHEME_KEYS.forEach((key) => {
-    colors[camelcase(key + (suffix ? `_${suffix}` : ''))] = scheme[key];
+    const colorName = camelcase(key + (suffix ? `_${suffix}` : ''));
+    colors[colorName] = scheme[key];
   });
+
   return colors;
 }
 
-function getColorsFromCustomColor<V extends boolean>(
+
+/**
+ * Generates color variants for a custom color group
+ * @param colorGroup Custom color configuration
+ * @param options Color scheme options
+ */
+function getColorsFromCustomColor(
   colorGroup: CustomColorGroup,
-  options: ColorSchemeOptions<V> = {},
-) {
-  const { dark = false, brightnessVariants = true } = options;
-  const variants: { type: 'light' | 'dark'; suffix?: string }[] = [];
+  options: ColorSchemeOptions = {},
+): ColorScheme {
+  const { dark = false, brightnessVariants = false } = options;
+  const variants: Array<{ type: 'light' | 'dark'; suffix?: string }> = [];
+
+  // Base variant
   variants.push({ type: dark ? 'dark' : 'light' });
+
+  // Brightness variants if enabled
   if (brightnessVariants) {
-    variants.push({ type: 'light', suffix: `light` }, { type: 'dark', suffix: `dark` });
+    variants.push(
+      { type: 'light', suffix: 'Light' },
+      { type: 'dark', suffix: 'Dark' },
+    );
   }
-  const colors: Record<string, number> = {};
-  for (const { type, suffix: variantSuffix } of variants) {
-    for (const [pattern, value] of Object.entries(colorGroup[type as 'light' | 'dark'])) {
-      const token = formatColorName(pattern, colorGroup.color.name, variantSuffix);
-      colors[token] = value;
+
+  const colors: ColorScheme = {};
+
+  for (const { type, suffix } of variants) {
+    const colorVariant = colorGroup[type];
+
+    for (const [pattern, value] of Object.entries(colorVariant)) {
+      const tokenName = formatColorName(pattern, colorGroup.color.name, suffix);
+      colors[tokenName] = value;
     }
   }
+
   return colors;
 }
 
-function getCustomColorsFromTheme<V extends boolean>(
+
+/**
+ * Aggregates custom colors from a theme
+ * @param theme Source theme object
+ * @param options Color scheme options
+ */
+function getCustomColorsFromTheme(
   theme: Theme,
-  options?: ColorSchemeOptions<V>,
-) {
-  return Object.assign(
-    {},
-    ...theme.customColors.map((customColor) => getColorsFromCustomColor(customColor, options)),
+  options?: ColorSchemeOptions,
+): ColorScheme {
+  return mergeColorSources(
+    ...theme.customColors.map(customColor =>
+      getColorsFromCustomColor(customColor, options),
+    ),
   );
 }

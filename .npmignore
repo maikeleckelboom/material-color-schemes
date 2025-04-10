@@ -1,5 +1,5 @@
 # Exclude development artifacts
-/test
+/tests
 /docs
 /scripts
 *.config.js
