@@ -17,7 +17,7 @@ import { convertToArgb } from './conversion.ts';
  * @example
  * // Using full options object
  * createTheme({
- *   seedColor: 0x00ff00,
+ *   sourceColor: 0x00ff00,
  *   variant: Variant.EXPRESSIVE,
  *   staticColors: [/* ... *\/]
  * });
@@ -26,15 +26,15 @@ import { convertToArgb } from './conversion.ts';
  * @param seedColor
  * @param options
  */
-export function createTheme(seedColor: Color, options?: Omit<ThemeOptions, 'seedColor'>): Theme;
+export function createTheme(seedColor: Color, options?: Omit<ThemeOptions, 'sourceColor'>): Theme;
 export function createTheme(options: ThemeOptions): Theme;
 export function createTheme(
   colorOrOptions: Color | ThemeOptions,
-  maybeOptions?: Omit<ThemeOptions, 'seedColor'>,
+  maybeOptions?: Omit<ThemeOptions, 'sourceColor'>,
 ): Theme {
   const options: ThemeOptions =
     typeof colorOrOptions === 'number' || typeof colorOrOptions === 'string'
-      ? { ...maybeOptions, seedColor: colorOrOptions }
+      ? { ...maybeOptions, sourceColor: colorOrOptions }
       : colorOrOptions;
 
   const {
@@ -48,11 +48,11 @@ export function createTheme(
     staticColors = [],
   } = options;
 
-  const seedColor = convertToArgb(options.seedColor ?? options.primary ?? 0);
+  const sourceColor = convertToArgb(options.sourceColor ?? options.primary ?? 0);
 
   const newScheme = (isDark: boolean) =>
     createScheme({
-      seedColor,
+      sourceColor,
       isDark,
       primary,
       secondary,
@@ -76,7 +76,7 @@ export function createTheme(
   };
 
   return {
-    source: seedColor,
+    source: sourceColor,
     contrastLevel,
     variant,
     schemes: {
@@ -84,7 +84,7 @@ export function createTheme(
       dark: darkScheme,
     },
     palettes: {
-      primary: TonalPalette.fromInt(convertToArgb(primary || seedColor)),
+      primary: TonalPalette.fromInt(convertToArgb(primary || sourceColor)),
       secondary: secondary ? TonalPalette.fromInt(convertToArgb(secondary)) : core.a2,
       tertiary: tertiary ? TonalPalette.fromInt(convertToArgb(tertiary)) : core.a3,
       neutral: neutral ? TonalPalette.fromInt(convertToArgb(neutral)) : core.n1,
@@ -93,6 +93,6 @@ export function createTheme(
         : core.n2,
       error: core.error,
     },
-    customColors: staticColors.map((color) => createCustomColor(seedColor, color)),
+    customColors: staticColors.map((color) => createCustomColor(sourceColor, color)),
   };
 }

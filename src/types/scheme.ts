@@ -13,5 +13,5 @@ export interface DefaultSchemeOptions {
 }
 
 export type SchemeOptions =
-  | (DefaultSchemeOptions & { primary: Color; seedColor?: Color })
-  | (DefaultSchemeOptions & { seedColor: Color; primary?: Color });
+  | (DefaultSchemeOptions & { primary: Color; sourceColor?: Color })
+  | (DefaultSchemeOptions & { sourceColor: Color; primary?: Color });

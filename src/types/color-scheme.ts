@@ -9,7 +9,7 @@ export type Color = string | number;
  * A looser version of the original Material color export.
  * Accepts hex strings in `value`, and `blend` is optional.
  */
-export interface CustomColor {
+export interface StaticColor {
   name: string;
   value: Color;
   blend?: boolean;

@@ -7,8 +7,8 @@ describe('createTheme', () => {
         expect(theme).toBeDefined();
     });
 
-    it('should accept an options object with seed color', () => {
-        const theme = createTheme({seedColor: 0xff00ff});
+    it('should accept an options object with source color', () => {
+        const theme = createTheme({sourceColor: 0xff00ff});
         expect(theme).toBeDefined();
     });
 

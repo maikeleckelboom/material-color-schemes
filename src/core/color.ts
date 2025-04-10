@@ -4,18 +4,18 @@ import {
   lstarFromArgb,
 } from '@material/material-color-utilities';
 import { convertToArgb } from './conversion.ts';
-import type { Color, CustomColor } from '../types';
+import type { Color, StaticColor } from '../types';
 
 /**
  * Create a custom color group with a custom color.
  *
- * @param designColor The design color used when blending.
+ * @param sourceColor The design color used when blending.
  * @param customColor The custom color to use in the custom color group.
  * @returns The custom color group, or null if the static color is invalid.
  */
-export function createCustomColor(designColor: Color, customColor: CustomColor): CustomColorGroup {
+export function createCustomColor(sourceColor: Color, customColor: StaticColor): CustomColorGroup {
   const { name, blend = false } = customColor;
-  const source = convertToArgb(designColor);
+  const source = convertToArgb(sourceColor);
   const value = convertToArgb(customColor.value);
   return toCustomColor(source, { name, value, blend });
 }

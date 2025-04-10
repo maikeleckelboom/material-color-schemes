@@ -18,7 +18,7 @@ import { ContrastLevel } from './config';
  * on that single source in combination with the default tonal palette.
  *
  * @overload
- * @param {Color} seedColor - The seed color used to generate the scheme.
+ * @param {Color} sourceColor - The seed color used to generate the scheme.
  * @param {DefaultSchemeOptions} [options] - Additional options to tweak the scheme.
  * @returns {DynamicScheme} The dynamic color scheme generated from the seed color.
  *
@@ -27,7 +27,7 @@ import { ContrastLevel } from './config';
  *                                  additional colors to override specific palettes.
  * @returns {DynamicScheme} The dynamic color scheme generated according to the given options.
  */
-export function createScheme(seedColor: Color, options?: DefaultSchemeOptions): DynamicScheme;
+export function createScheme(sourceColor: Color, options?: DefaultSchemeOptions): DynamicScheme;
 export function createScheme(options: SchemeOptions): DynamicScheme;
 export function createScheme(
   colorOrOptions: Color | SchemeOptions,
@@ -35,7 +35,7 @@ export function createScheme(
 ): DynamicScheme {
   const options: SchemeOptions =
     typeof colorOrOptions === 'number' || typeof colorOrOptions === 'string'
-      ? { ...maybeOptions, seedColor: colorOrOptions }
+      ? { ...maybeOptions, sourceColor: colorOrOptions }
       : colorOrOptions;
 
   const {
@@ -44,7 +44,7 @@ export function createScheme(
     variant = Variant.TONAL_SPOT,
   } = options;
 
-  const sourceColorArgb = convertToArgb(options.seedColor || options.primary || 0);
+  const sourceColorArgb = convertToArgb(options.sourceColor || options.primary || 0);
 
   const SchemeConstructor = mapVariantToScheme(variant);
   const scheme = new SchemeConstructor(convertToHct(sourceColorArgb), isDark, contrastLevel);
@@ -67,7 +67,7 @@ export function createScheme(
     isDark,
     contrastLevel,
     variant,
-    primaryPalette: createPalette(options.primary || options.seedColor, core.a1),
+    primaryPalette: createPalette(options.primary || options.sourceColor, core.a1),
     secondaryPalette: createPalette(options.secondary, core.a2),
     tertiaryPalette: createPalette(options.tertiary, core.a3),
     neutralPalette: createPalette(options.neutral, core.n1),
@@ -81,7 +81,7 @@ function createPalette(color: Color | undefined, fallback: TonalPalette) {
 }
 
 function isSchemeBasedOnSeedColor(options: SchemeOptions): boolean {
-  const hasColorSource = !!options.seedColor || !!options.primary;
+  const hasColorSource = !!options.sourceColor || !!options.primary;
   return (
     hasColorSource &&
     !Object.values({
