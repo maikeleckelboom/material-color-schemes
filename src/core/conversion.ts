@@ -59,25 +59,25 @@ export function toXyz(color: Color): number[] {
 }
 
 /** Return the alpha value of a color in HEX or ARGB format */
-export function toAlpha(color: Color): number {
+export function getAlpha(color: Color): number {
   const argbColor = toArgb(color);
   return alphaFromArgb(argbColor);
 }
 
 /** Return the red value of a color in HEX or ARGB format */
-export function toRed(color: Color): number {
+export function getRed(color: Color): number {
   const argbColor = toArgb(color);
   return redFromArgb(argbColor);
 }
 
 /** Return the green value of a color in HEX or ARGB format */
-export function toGreen(color: Color): number {
+export function getGreen(color: Color): number {
   const argbColor = toArgb(color);
   return greenFromArgb(argbColor);
 }
 
 /** Return the blue value of a color in HEX or ARGB format */
-export function toBlue(color: Color): number {
+export function getBlue(color: Color): number {
   const argbColor = toArgb(color);
   return blueFromArgb(argbColor);
 }

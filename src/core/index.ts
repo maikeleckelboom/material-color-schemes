@@ -28,10 +28,10 @@ export {
   toLab,
   toXyz,
   toLstar,
-  toAlpha,
-  toRed,
-  toGreen,
-  toBlue,
+  getAlpha,
+  getRed,
+  getGreen,
+  getBlue,
 } from './conversion.ts';
 
 // formatting.ts – For string/UI representations
@@ -45,8 +45,11 @@ export {
 // css-vars.ts - For CSS variable generation
 export { createCssVarMap, serializeCssVarMap, createCssVariables } from './css-vars.ts';
 
+// blend.ts – For color manipulation and blending
 export { harmonize, blendHue, blendCam } from './blend.ts';
+// color.ts – For color creation and manipulation
 export { createCustomColor } from './color.ts';
+// quantize.ts – For image quantization
 export { quantizeColors } from './quantize.ts';
 
 // Palette generation and management
