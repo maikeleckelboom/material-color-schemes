@@ -13,13 +13,13 @@ reliably. The `createColorScheme` method then transforms these into fully functi
 
 ## Features
 
-- **Complete Material Design 3 Color System**: Implements the full set of guidelines.
-- **Light/Dark Theme Automation**: Generates both themes automatically.
-- **Custom Color Creation**: Includes automatic harmonization.
-- **Accessibility Tools**: Built-in contrast checking.
-- **Color Space Conversions**: Supports HEX, RGB, HCT, and LAB.
-- **CSS Variable Generation**: Easily converts colors for styling.
-- **Fully Typed API**: Built with full TypeScript support.
+- **🎨 Complete Material Design 3 Color System**: Implements the full set of guidelines.
+- **🌗 Light/Dark Theme Automation**: Generates both themes automatically.
+- **🌈 Custom Color Creation**: Includes automatic harmonization.
+- **♿ Accessibility Tools**: Built-in contrast checking.
+- **🔄 Color Space Conversions**: HEX ↔ ARGB ↔ CSS conversions
+- **💅 CSS Variable Generation**: Easily integrate with CSS.
+- **🛡️ Type-Safe Architecture**: Fully typed with TypeScript
 
 ---
 
@@ -91,7 +91,7 @@ Providing only a `sourceColor` lets the library auto-generate a comprehensive se
   });
   ```
 
-    - **Returns:** A `Theme` object that includes both light and dark schemes, along with custom palettes.
+  - **Returns:** A `Theme` object that includes both light and dark schemes, along with custom palettes.
 
 **Under the Hood:**  
 `createTheme` calls `createScheme` twice (for light and dark) to form a complete theme in one step.
