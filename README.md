@@ -16,8 +16,6 @@ reliably. The `createColorScheme` method then transforms these into fully functi
 - **🎨 Complete Material Design 3 Color System**: Implements the full set of guidelines.
 - **🌗 Light/Dark Theme Automation**: Generates both themes automatically.
 - **🌈 Custom Color Creation**: Includes automatic harmonization.
-- **♿ Accessibility Tools**: Built-in contrast checking.
-- **🔄 Color Space Conversions**: HEX ↔ ARGB ↔ CSS conversions
 - **💅 CSS Variable Generation**: Easily integrate with CSS.
 - **🛡️ Type-Safe Architecture**: Fully typed with TypeScript
 
@@ -110,32 +108,24 @@ can use
 
 ## Alignment with Official Material Design
 
-This library is designed to mirror the official Material Design package as closely as possible. However, note that the
-Material Design team does not maintain a TypeScript version of their code. As a result, changes in the official
-implementation may require updates in this library to ensure compatibility.
+This library closely mirrors the official Material Design package, while addressing the fact that there isn’t a maintained TypeScript version available. Updates to the official implementation may require corresponding changes here to stay compatible.
 
-- **Versioning & Compatibility:** Follows semantic versioning. Breaking changes may occur with major updates.
-- **Community Involvement:** Contributions, issue reports, and feedback are encouraged to help maintain quality and
-  alignment.
+- **Versioning & Compatibility:** Uses semantic versioning; major updates may introduce breaking changes.
+- **Community Collaboration:** Contributions, issue reports, and feedback are welcome to help maintain quality and alignment.
 
 ---
 
 ## Motivation
 
-While working on personal projects, I often needed a reliable solution for creating Material Design themes and color
-schemes.
-To address this gap, I built this library to complement the official Material Design package as a peer
-dependency, offering a more complete and integrated experience.
+During my personal projects, I found that a robust solution for creating Material Design themes and color schemes was missing. This library was built to complement the official Material Design package as a peer dependency and provide a more integrated experience.
 
-### Why This Library?
+### Why Choose This Library?
 
-- **High-Level API Need:** The official library lacks a high-level API for crafting color schemes, similar to
-  `material-kolor` for TypeScript.
-- **Existing Solutions' Gaps:** Other npm packages often fall short in functionality or current Material Design specs.
-- **CLI Integration:** A command-line interface allows seamless color scheme generation directly from the terminal.
-- **Community-Driven:** Open and collaborative—accepts pull requests and welcomes contributions to address the official
-  package's limited community input.
-- **Personal Experience:** I've relied on Material Design's intuitive color system across projects.
+- **Enhanced API:** Provides a high-level interface for crafting color schemes—something the official library lacks.
+- **Filling the Gaps:** Many alternative npm packages do not fully implement the latest Material Design specs or offer comprehensive functionality.
+- **CLI Support:** Generate color schemes directly from the terminal with the integrated command-line interface.
+- **Community Driven:** Open to contributions and pull requests, ensuring ongoing improvement and closer alignment with evolving standards.
+- **Built on Experience:** Developed from first-hand experience using Material Design’s intuitive color system in various projects.
 
 ---
 
