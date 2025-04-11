@@ -19,7 +19,7 @@ import { getPaletteColors } from './palette.ts';
  * @returns {ColorSchemeReturnType<V extends boolean>} Color scheme with numeric color values
  *
  * @example
- * // Basic usage with default theme
+ * // Basic usage with a theme
  * const scheme = createColorScheme(theme);
  *
  * @example
