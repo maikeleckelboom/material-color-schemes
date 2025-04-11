@@ -1,23 +1,14 @@
 # Material Schemes Library
 
-A lightweight library that makes it simple to create Material Design themes and color schemes for your apps or websites.
-It works in tandem
-with [@material/material-color-utilities](https://www.npmjs.com/package/@material/material-color-utilities), offering an
-extra layer of flexibility to start with just one color and generate a full set of coordinated, accessible palettes.
+A lightweight library that simplifies creating Material Design themes and color schemes for your apps or websites. It
+works seamlessly
+with [@material/material-color-utilities](https://www.npmjs.com/package/@material/material-color-utilities), providing
+an extra layer of flexibility by generating complete, coordinated, and accessible color palettes from just a single
+color.
 
-Engineered to streamline practical workflows, the library’s core functions—`createScheme`, `createTheme`, and
-`createPalette`—produce cohesive color systems (`DynamicScheme`, `Theme`, and `TonalPalette` instances) quickly and
-reliably. The `createColorScheme` method then transforms these into fully functional color schemes for your project.
-
----
-
-## Features
-
-- **🎨 Complete Material Design 3 Color System**: Implements the full set of guidelines.
-- **🌗 Light/Dark Theme Automation**: Generates both themes automatically.
-- **🌈 Custom Color Creation**: Includes automatic harmonization.
-- **💅 CSS Variable Generation**: Easily integrate with CSS.
-- **🛡️ Type-Safe Architecture**: Fully typed with TypeScript
+Engineered for practical workflows, the library offers core functions—`createScheme`, `createTheme`, and `createPalette`
+—that quickly produce cohesive color systems (`DynamicScheme`, `Theme`, and `TonalPalette` instances). The
+`createColorScheme` method then transforms these into production-ready color schemes for your project.
 
 ---
 
@@ -108,35 +99,61 @@ can use
 
 ## Alignment with Official Material Design
 
-This library closely mirrors the official Material Design package, while addressing the fact that there isn’t a maintained TypeScript version available. Updates to the official implementation may require corresponding changes here to stay compatible.
+This library closely mirrors the official Material Design package, while addressing the fact that there isn’t a
+maintained TypeScript version available. Updates to the official implementation may require corresponding changes here
+to stay compatible.
 
 - **Versioning & Compatibility:** Uses semantic versioning; major updates may introduce breaking changes.
-- **Community Collaboration:** Contributions, issue reports, and feedback are welcome to help maintain quality and alignment.
+- **Community Collaboration:** Contributions, issue reports, and feedback are welcome to help maintain quality and
+  alignment.
 
 ---
 
 ## Motivation
 
-During my personal projects, I found that a robust solution for creating Material Design themes and color schemes was missing. This library was built to complement the official Material Design package as a peer dependency and provide a more integrated experience.
+During my personal projects, I found that a robust solution for creating Material Design themes and color schemes was
+missing. This library was built to complement the official Material Design package as a peer dependency and provide a
+more integrated experience.
 
 ### Why Choose This Library?
 
 - **Enhanced API:** Provides a high-level interface for crafting color schemes—something the official library lacks.
-- **Filling the Gaps:** Many alternative npm packages do not fully implement the latest Material Design specs or offer comprehensive functionality.
+- **Filling the Gaps:** Many alternative npm packages do not fully implement the latest Material Design specs or offer
+  comprehensive functionality.
 - **CLI Support:** Generate color schemes directly from the terminal with the integrated command-line interface.
-- **Community Driven:** Open to contributions and pull requests, ensuring ongoing improvement and closer alignment with evolving standards.
-- **Built on Experience:** Developed from first-hand experience using Material Design’s intuitive color system in various projects.
+- **Community Driven:** Open to contributions and pull requests, ensuring ongoing improvement and closer alignment with
+  evolving standards.
+- **Built on Experience:** Developed from first-hand experience using Material Design’s intuitive color system in
+  various projects.
 
 ---
 
-## Roadmap
+### 🧭 Positioning
 
-- **Current Features:**
-    - [x] Dynamic color generation
-    - [x] Light and dark theme support
-    - [x] CSS variable generation
-    - [x] Contrast checking
-    - [x] Color space conversions
+This library fills a key gap in the Material Design ecosystem: a modern, TypeScript-native tool for generating color
+schemes with a high-level API and CLI support. While official utilities like `material-color-utilities` provide
+low-level building blocks, and `material-kolor` serves Kotlin developers, there's been no ergonomic solution tailored
+for JavaScript/TypeScript workflows—until now. Designed to complement the official packages, this library offers a more
+complete and developer-friendly experience, with full support for community contributions.
+
+---
+
+## Contributing
+
+Contributions are welcome! Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to
+this project.
+
+----
+
+## Acknowledgments
+
+This library is built on top of the excellent work done by the Material Design team and the
+[@material/material-color-utilities](https://www.npmjs.com/package/@material/material-color-utilities) package.
+
+
+---
+
+### Roadmap
 
 - **Planned Improvements:**
     - [ ] Site for documentation and examples
@@ -147,21 +164,6 @@ During my personal projects, I found that a robust solution for creating Materia
     - [ ] Support for additional color spaces (e.g., HSL, OKLCH).
 
 ---
-
-## Acknowledgments
-
-This library is built on top of the excellent work done by the Material Design team and the
-[@material/material-color-utilities](https://www.npmjs.com/package/@material/material-color-utilities) package.
-
-
----
-
-## Contributing
-
-Contributions are welcome! Please read the [CONTRIBUTING.md](./CONTRIBUTING.md) for guidelines on how to contribute to
-this project.
-
----- 
 
 ## License
 
